@@ -1,11 +1,14 @@
 package fr.ig2i.pocketbudget;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -20,13 +23,13 @@ import java.util.List;
  * Created by kenzakhamaily on 24/03/2016.
  */
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CategoryViewHolder> {
-    List<Category> categories;
+    static List<Category> categories;
 
     public RVAdapter(List<Category> categories) {
         this.categories = categories;
     }
 
-    public static class CategoryViewHolder extends RecyclerView.ViewHolder {
+    public static class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         CardView cv;
         static TextView categName;
         static TextView categBudget;
@@ -45,7 +48,46 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CategoryViewHolder
             spentMoney = (TextView) itemView.findViewById(R.id.spent);
             Toolbar toolbar = (Toolbar) itemView.findViewById(R.id.card_toolbar);
             toolbar.inflateMenu(R.menu.card_toolbar);
+            toolbar.setOnMenuItemClickListener(
+                    new Toolbar.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            int id = item.getItemId();
+                            switch(id) {
+                                case R.id.category_edit:
+                                    break;
+                                case R.id.category_delete:
+                                    break;
+                            }
+                            return true;
+                        }
+                    });
         }
+
+        @Override
+        public void onClick(View v) {
+            int i = getPosition();
+            Category cat = categories.get(i);
+            Context context = v.getContext();
+
+            Intent versCategorySpendings = new Intent(context,CategorySpendings.class);
+            versCategorySpendings.putExtra("category_id", i);
+            versCategorySpendings.putExtra("category_name", cat.getName());
+            context.startActivity(versCategorySpendings);
+            //Rediriger vers l'activité CategorySpendings
+            //Pouvoir passer en paramètre le nom de la catégorie et ses dépenses
+        }
+    }
+
+    public void add(Category item, int position) {
+        categories.add(position, item);
+        notifyItemInserted(position);
+    }
+
+    public void remove(Category item) {
+        int position = categories.indexOf(item);
+        categories.remove(position);
+        notifyItemRemoved(position);
     }
 
     @Override

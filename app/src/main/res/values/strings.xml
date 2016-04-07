@@ -3,4 +3,5 @@
     <string name="dashboard">Dashboard</string>
     <string name="spendings">Dépenses</string>
     <string name="earnings">Revenus</string>
+    <string name="categorySpendings">Catégorie</string>
 </resources>

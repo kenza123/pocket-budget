@@ -1,5 +1,8 @@
 package fr.ig2i.pocketbudget;
 
+import android.content.Intent;
+import android.view.MenuItem;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +30,10 @@ public class Category {
 
     public List<Category> getCategories() {
         return categories;
+    }
+
+    public String getName() {
+        return name;
     }
 
     void initializeData(){
