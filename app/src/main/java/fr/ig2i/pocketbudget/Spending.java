@@ -28,7 +28,7 @@ public class Spending {
         categorySpendings = new ArrayList<Spending>();
         categorySpendings.add(new Spending("Robe Zara",100.00));
         categorySpendings.add(new Spending("Pantalon Stradivarius",25.00));
-        categorySpendings.add(new Spending("RSac à main Stradivarius",30.00));
+        categorySpendings.add(new Spending("Sac à main Stradivarius",30.00));
 
     }
 }

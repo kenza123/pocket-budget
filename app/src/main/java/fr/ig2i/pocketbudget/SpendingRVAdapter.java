@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import java.util.List;
 
@@ -25,11 +26,15 @@ public class SpendingRVAdapter extends RecyclerView.Adapter<SpendingRVAdapter.Sp
         String tag;
         static TextView spendingName;
         static TextView spendingPrice;
+        static Toolbar toolbar;
+
         public SpendingViewHolder(View itemView) {
             super(itemView);
             cv = (CardView) itemView.findViewById(R.id.cv_spending);
             spendingName = (TextView) itemView.findViewById(R.id.spending_name);
             spendingPrice = (TextView) itemView.findViewById(R.id.spending_price);
+            toolbar = (Toolbar) itemView.findViewById(R.id.card_toolbar2);
+            toolbar.inflateMenu(R.menu.card_toolbar);
         }
     }
 
