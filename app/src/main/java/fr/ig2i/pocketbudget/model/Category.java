@@ -1,7 +1,5 @@
 package fr.ig2i.pocketbudget.model;
 
-import java.util.ArrayList;
-import java.util.List;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -12,7 +10,7 @@ public class Category implements Parcelable{
     private int id;
     private String label;
     private Double budget;
-    private Double warningTreshold;
+    private Double warningThreshold;
 
     int bProgress;
     //int pictureId;
@@ -23,13 +21,13 @@ public class Category implements Parcelable{
     public Category(String label, Double budget, Double warningTreshold) {
         this.label = label;
         this.budget = budget;
-        this.warningTreshold = warningTreshold;
+        this.warningThreshold = warningTreshold;
     }
 
     public Category(String label, Double budget, Double warningTreshold, int bProgress) {
         this.label = label;
         this.budget = budget;
-        this.warningTreshold = warningTreshold;
+        this.warningThreshold = warningTreshold;
         this.bProgress = bProgress;
     }
 
@@ -37,7 +35,7 @@ public class Category implements Parcelable{
         id = in.readInt();
         label = in.readString();
         budget = in.readDouble();
-        warningTreshold = in.readDouble();
+        warningThreshold = in.readDouble();
     }
 
     public String getLabel() {
@@ -52,8 +50,8 @@ public class Category implements Parcelable{
         return budget;
     }
 
-    public Double getWarningTreshold() {
-        return warningTreshold;
+    public Double getWarningThreshold() {
+        return warningThreshold;
     }
 
     public int getbProgress() {
@@ -72,8 +70,8 @@ public class Category implements Parcelable{
         this.budget = budget;
     }
 
-    public void setWarningTreshold(Double warningTreshold) {
-        this.warningTreshold = warningTreshold;
+    public void setWarningThreshold(Double warningThreshold) {
+        this.warningThreshold = warningThreshold;
     }
 
     @Override
@@ -86,7 +84,7 @@ public class Category implements Parcelable{
         parcel.writeInt(getId());
         parcel.writeString(getLabel());
         parcel.writeDouble(getBudget());
-        parcel.writeDouble(getWarningTreshold());
+        parcel.writeDouble(getWarningThreshold());
     }
 
     public static final Parcelable.Creator<Category> CREATOR = new Parcelable.Creator<Category>() {
@@ -98,4 +96,14 @@ public class Category implements Parcelable{
             return new Category[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "id=" + id +
+                ", label='" + label + '\'' +
+                ", budget=" + budget +
+                ", warningThreshold=" + warningThreshold +
+                '}';
+    }
 }
