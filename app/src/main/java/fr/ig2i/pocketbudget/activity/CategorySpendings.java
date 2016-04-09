@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView;
 
 import fr.ig2i.pocketbudget.R;
 import fr.ig2i.pocketbudget.adapter.SpendingRVAdapter;
-import fr.ig2i.pocketbudget.model.Spending;
+import fr.ig2i.pocketbudget.service.SpendingService;
 
 public class CategorySpendings extends AppCompatActivity {
 
@@ -25,15 +25,14 @@ public class CategorySpendings extends AppCompatActivity {
         setTitle(categoryName);
 
         //Here we can after extract data from dataBase and intialize data
-        Spending spe = new Spending();
-        spe.initializeData();
+        SpendingService spendingService = new SpendingService();
 
         RecyclerView rv = (RecyclerView) findViewById(R.id.rv_spending);
         rv.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         rv.setLayoutManager(llm);
 
-        SpendingRVAdapter adapter = new SpendingRVAdapter(spe.getCategorySpendings());
+        SpendingRVAdapter adapter = new SpendingRVAdapter(spendingService.getAllSpendings());
         rv.setAdapter(adapter);
     }
 }

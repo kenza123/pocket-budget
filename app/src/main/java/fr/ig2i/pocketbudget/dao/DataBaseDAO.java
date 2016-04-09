@@ -9,14 +9,14 @@ import java.sql.SQLException;
 /**
  * Created by ghitakhamaily on 09/04/16.
  */
-public class DBDAO {
-    private static final String TAG = "DBDAO";
+public class DataBaseDAO {
+    private static final String TAG = "DataBaseDAO";
 
     protected SQLiteDatabase database;
     private DataBaseHelper dbHelper;
     private Context mContext;
 
-    public DBDAO(Context context) {
+    public DataBaseDAO(Context context) {
         this.mContext = context;
         dbHelper = DataBaseHelper.getHelper(mContext);
         try {
@@ -32,5 +32,10 @@ public class DBDAO {
         if(dbHelper == null)
             dbHelper = DataBaseHelper.getHelper(mContext);
         database = dbHelper.getWritableDatabase();
+    }
+
+    public void close() {
+        dbHelper.close();
+        database = null;
     }
 }
