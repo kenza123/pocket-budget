@@ -12,7 +12,7 @@ public class Spending implements Parcelable {
     private String label;
     private Category category;
     private Double amount;
-    private Date created_at;
+    private Date date;
 
     public Spending() {
     }
@@ -26,7 +26,7 @@ public class Spending implements Parcelable {
         id = in.readInt();
         label = in.readString();
         amount = in.readDouble();
-        created_at = new Date(in.readLong());
+        date = new Date(in.readLong());
         category = in.readParcelable(Category.class.getClassLoader());
     }
 
@@ -46,8 +46,8 @@ public class Spending implements Parcelable {
         return category;
     }
 
-    public Date getCreated_at() {
-        return created_at;
+    public Date getDate() {
+        return date;
     }
 
     public void setId(int id) {
@@ -66,8 +66,8 @@ public class Spending implements Parcelable {
         this.amount = amount;
     }
 
-    public void setCreated_at(Date created_at) {
-        this.created_at = created_at;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     @Override
@@ -80,7 +80,7 @@ public class Spending implements Parcelable {
         parcel.writeInt(getId());
         parcel.writeString(getLabel());
         parcel.writeDouble(getAmount());
-        parcel.writeLong(getCreated_at().getTime());
+        parcel.writeLong(getDate().getTime());
         parcel.writeParcelable(getCategory(), flags);
     }
 
@@ -93,4 +93,15 @@ public class Spending implements Parcelable {
             return new Spending[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "Spending{" +
+                "id=" + id +
+                ", label='" + label + '\'' +
+                ", category=" + category +
+                ", amount=" + amount +
+                ", date=" + date +
+                '}';
+    }
 }

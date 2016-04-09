@@ -19,9 +19,9 @@ public class DataBaseHelper extends SQLiteOpenHelper  {
     public static final String ID_COLUMN = "id";
     public static final String LABEL_COLUMN = "label";
     public static final String AMOUNT_COLUMN = "amount";
-    public static final String CREATED_AT_COLUMN = "created_at";
+    public static final String DATE_COLUMN = "date";
     public static final String CATEGORIE_BUDGET = "budget";
-    public static final String CATEGORIE_WARNING_THRESHOLD = "warning_treshold";
+    public static final String CATEGORIE_WARNING_THRESHOLD = "warning_threshold";
     public static final String SPENDING_CATEGORIE_ID = "id_categ";
 
     public static final String CREATE_CATEGORIE_TABLE = "CREATE TABLE "
@@ -32,14 +32,14 @@ public class DataBaseHelper extends SQLiteOpenHelper  {
     public static final String CREATE_EARNING_TABLE = "CREATE TABLE "
             + EARNING_TABLE + "(" + ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + LABEL_COLUMN + " TEXT, " + AMOUNT_COLUMN + " DOUBLE, "
-            + CREATED_AT_COLUMN + " DATE, " + SPENDING_CATEGORIE_ID + " INTEGER, "
+            + DATE_COLUMN + " DATE, " + SPENDING_CATEGORIE_ID + " INTEGER, "
             + "FOREIGN KEY(" + SPENDING_CATEGORIE_ID + ") REFERENCES "
             + CATEGORIE_TABLE + "(id) " + ")";
 
     public static final String CREATE_SPENDING_TABLE = "CREATE TABLE "
             + SPENDING_TABLE + "(" + ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + LABEL_COLUMN + " TEXT, " + AMOUNT_COLUMN + " DOUBLE, "
-            + CREATED_AT_COLUMN + " DATE "+ ")";
+            + DATE_COLUMN + " DATE "+ ")";
 
     private static DataBaseHelper instance;
 

@@ -2,7 +2,6 @@ package fr.ig2i.pocketbudget.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import java.util.Date;
 
 /**
@@ -13,16 +12,22 @@ public class Earning implements Parcelable {
     private int id;
     private String label;
     private Double amount;
-    private Date created_at;
+    private Date date;
 
     public Earning() {
+    }
+
+    public Earning(String label, Date date, Double amount) {
+        this.label = label;
+        this.date = date;
+        this.amount = amount;
     }
 
     private Earning(Parcel in) {
         id = in.readInt();
         label = in.readString();
         amount = in.readDouble();
-        created_at = new Date(in.readLong());;
+        date = new Date(in.readLong());;
     }
 
     public int getId() {
@@ -37,8 +42,8 @@ public class Earning implements Parcelable {
         return amount;
     }
 
-    public Date getCreated_at() {
-        return created_at;
+    public Date getDate() {
+        return date;
     }
 
     public void setId(int id) {
@@ -53,8 +58,8 @@ public class Earning implements Parcelable {
         this.amount = amount;
     }
 
-    public void setCreated_at(Date created_at) {
-        this.created_at = created_at;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     @Override
@@ -67,7 +72,7 @@ public class Earning implements Parcelable {
         parcel.writeInt(getId());
         parcel.writeString(getLabel());
         parcel.writeDouble(getAmount());
-        parcel.writeLong(getCreated_at().getTime());
+        parcel.writeLong(getDate().getTime());
     }
 
     public static final Parcelable.Creator<Earning> CREATOR = new Parcelable.Creator<Earning>() {
@@ -79,4 +84,14 @@ public class Earning implements Parcelable {
             return new Earning[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "Earning{" +
+                "id=" + id +
+                ", label='" + label + '\'' +
+                ", amount=" + amount +
+                ", date=" + date +
+                '}';
+    }
 }

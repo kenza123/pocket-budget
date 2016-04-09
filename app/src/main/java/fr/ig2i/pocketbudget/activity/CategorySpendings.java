@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 
 import fr.ig2i.pocketbudget.R;
 import fr.ig2i.pocketbudget.adapter.SpendingRVAdapter;
-import fr.ig2i.pocketbudget.model.Spending;
 import fr.ig2i.pocketbudget.service.SpendingService;
 
 public class CategorySpendings extends AppCompatActivity {

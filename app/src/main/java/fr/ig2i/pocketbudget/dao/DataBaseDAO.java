@@ -33,4 +33,9 @@ public class DataBaseDAO {
             dbHelper = DataBaseHelper.getHelper(mContext);
         database = dbHelper.getWritableDatabase();
     }
+
+    public void close() {
+        dbHelper.close();
+        database = null;
+    }
 }
