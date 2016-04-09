@@ -1,8 +1,7 @@
-package fr.ig2i.pocketbudget;
+package fr.ig2i.pocketbudget.adapter;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +9,9 @@ import android.widget.TextView;
 import android.widget.Toolbar;
 
 import java.util.List;
+
+import fr.ig2i.pocketbudget.R;
+import fr.ig2i.pocketbudget.model.Spending;
 
 /**
  * Created by kenzakhamaily on 07/04/2016.
@@ -58,8 +60,8 @@ public class SpendingRVAdapter extends RecyclerView.Adapter<SpendingRVAdapter.Sp
 
     @Override
     public void onBindViewHolder(SpendingViewHolder holder, int i) {
-        holder.spendingName.setText(spendings.get(i).name);
-        holder.spendingPrice.setText(spendings.get(i).price.toString() + "€");
+        holder.spendingName.setText(spendings.get(i).getLabel());
+        holder.spendingPrice.setText(spendings.get(i).getAmount().toString() + "€");
 
     }
 

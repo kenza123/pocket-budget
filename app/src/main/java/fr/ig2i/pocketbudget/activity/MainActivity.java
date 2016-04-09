@@ -1,12 +1,12 @@
-package fr.ig2i.pocketbudget;
+package fr.ig2i.pocketbudget.activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RelativeLayout;
+
+import fr.ig2i.pocketbudget.R;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 

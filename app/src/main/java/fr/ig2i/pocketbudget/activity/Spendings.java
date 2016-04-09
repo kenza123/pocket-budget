@@ -1,4 +1,4 @@
-package fr.ig2i.pocketbudget;
+package fr.ig2i.pocketbudget.activity;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import java.util.List;
+import fr.ig2i.pocketbudget.R;
+import fr.ig2i.pocketbudget.adapter.RVAdapter;
+import fr.ig2i.pocketbudget.service.CategoryService;
 
 public class Spendings extends AppCompatActivity {
 
@@ -18,15 +20,14 @@ public class Spendings extends AppCompatActivity {
 
         setContentView(R.layout.activity_spendings);
 
-        Category cat = new Category();
-        cat.initializeData();
+        CategoryService categoryService = new CategoryService();
 
         RecyclerView rv = (RecyclerView)findViewById(R.id.rv);
         rv.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         rv.setLayoutManager(llm);
 
-        RVAdapter adapter = new RVAdapter(cat.getCategories(), context);
+        RVAdapter adapter = new RVAdapter(categoryService.getAllCategories(), context);
         rv.setAdapter(adapter);
     }
 }
