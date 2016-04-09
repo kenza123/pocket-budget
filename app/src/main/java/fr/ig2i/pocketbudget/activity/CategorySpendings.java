@@ -1,10 +1,13 @@
-package fr.ig2i.pocketbudget;
+package fr.ig2i.pocketbudget.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+
+import fr.ig2i.pocketbudget.R;
+import fr.ig2i.pocketbudget.adapter.SpendingRVAdapter;
+import fr.ig2i.pocketbudget.model.Spending;
 
 public class CategorySpendings extends AppCompatActivity {
 

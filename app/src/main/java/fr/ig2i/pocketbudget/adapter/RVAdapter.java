@@ -1,10 +1,7 @@
-package fr.ig2i.pocketbudget;
+package fr.ig2i.pocketbudget.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,10 +13,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
-import junit.framework.Test;
-
 import java.util.Collections;
 import java.util.List;
+
+import fr.ig2i.pocketbudget.activity.CategorySpendings;
+import fr.ig2i.pocketbudget.R;
+import fr.ig2i.pocketbudget.model.Category;
 
 /**
  * Created by kenzakhamaily on 24/03/2016.
@@ -77,11 +76,11 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CategoryViewHolder
                     String position = Integer.toString(i);
                     Category cat = categories.get(i);
                     String tag = "Info";
-                    Log.i(tag, "onClick event on category " + cat.getName() + " " + i);
+                    Log.i(tag, "onClick event on category " + cat.getLabel() + " " + i);
                     Intent versCategorySpendings = new Intent(context,CategorySpendings.class);
                     versCategorySpendings.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     //versCategorySpendings.putExtra("category_id", position);
-                    versCategorySpendings.putExtra("category_name", cat.getName());
+                    versCategorySpendings.putExtra("category_name", cat.getLabel());
                     context.startActivity(versCategorySpendings);
                     //Rediriger vers l'activité CategorySpendings
                     //Pouvoir passer en paramètre le nom de la catégorie et ses dépenses
@@ -112,11 +111,11 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CategoryViewHolder
 
     @Override
     public void onBindViewHolder(CategoryViewHolder holder, int i) {
-        holder.categName.setText(categories.get(i).name);
-        holder.categBudget.setText(categories.get(i).budget.toString() + "€");
-        holder.cProgress.setProgress(categories.get(i).bProgress);
-        holder.progressText.setText(categories.get(i).bProgress+"%");
-        double spentM = ((categories.get(i).budget * categories.get(i).bProgress)/100);
+        holder.categName.setText(categories.get(i).getLabel());
+        holder.categBudget.setText(categories.get(i).getBudget().toString() + "€");
+        holder.cProgress.setProgress(categories.get(i).getbProgress());
+        holder.progressText.setText(categories.get(i).getbProgress()+"%");
+        double spentM = ((categories.get(i).getBudget() * categories.get(i).getbProgress())/100);
         holder.spentMoney.setText("-"+String.valueOf(spentM)+"€");
     }
 
