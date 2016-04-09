@@ -18,6 +18,11 @@ public class Earning implements Parcelable {
     public Earning() {
     }
 
+    public Earning(String label, Double amount) {
+        this.label = label;
+        this.amount = amount;
+    }
+
     private Earning(Parcel in) {
         id = in.readInt();
         label = in.readString();

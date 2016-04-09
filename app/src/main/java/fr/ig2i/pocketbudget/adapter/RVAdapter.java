@@ -19,6 +19,7 @@ import java.util.List;
 import fr.ig2i.pocketbudget.activity.CategorySpendings;
 import fr.ig2i.pocketbudget.R;
 import fr.ig2i.pocketbudget.model.Category;
+import fr.ig2i.pocketbudget.model.Earning;
 
 /**
  * Created by kenzakhamaily on 24/03/2016.

@@ -25,7 +25,10 @@
             android:label="@string/earnings" />
         <activity
             android:name=".activity.CategorySpendings"
-            android:label="@string/categorySpendings"/>
+            android:label="@string/categorySpendings" />
+        <activity
+            android:name=".activity.AddCategory"
+            android:label="@string/newCategory"/>
     </application>
 
 </manifest>

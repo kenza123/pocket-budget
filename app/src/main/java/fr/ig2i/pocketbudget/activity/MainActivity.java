@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(versSpendings);
                 break;
             case R.id.earning:
+                Intent versEarnings = new Intent(this,Earnings.class);
+                startActivity(versEarnings);
                 break;
         }
     }

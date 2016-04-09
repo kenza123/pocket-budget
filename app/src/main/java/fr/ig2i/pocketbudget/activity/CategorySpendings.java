@@ -1,9 +1,12 @@
 package fr.ig2i.pocketbudget.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import fr.ig2i.pocketbudget.R;
 import fr.ig2i.pocketbudget.adapter.SpendingRVAdapter;
@@ -35,5 +38,25 @@ public class CategorySpendings extends AppCompatActivity {
 
         SpendingRVAdapter adapter = new SpendingRVAdapter(spe.getCategorySpendings());
         rv.setAdapter(adapter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu2, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+
+            case R.id.add : break;
+            case R.id.edit :
+                //Intent versPref = new Intent(this,PrefActivity.class);
+                //startActivity(versPref);
+                break;
+            case R.id.delete : break;
+        }
+        return true;
     }
 }
