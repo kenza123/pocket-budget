@@ -21,12 +21,12 @@ public class SpendingRVAdapter extends RecyclerView.Adapter<SpendingRVAdapter.Sp
         this.spendings = spendings;
     }
 
-    public static class SpendingViewHolder extends RecyclerView.ViewHolder {
+    public class SpendingViewHolder extends RecyclerView.ViewHolder {
         CardView cv;
         String tag;
-        static TextView spendingName;
-        static TextView spendingPrice;
-        static Toolbar toolbar;
+        TextView spendingName;
+        TextView spendingPrice;
+        Toolbar toolbar;
 
         public SpendingViewHolder(View itemView) {
             super(itemView);
@@ -58,8 +58,8 @@ public class SpendingRVAdapter extends RecyclerView.Adapter<SpendingRVAdapter.Sp
 
     @Override
     public void onBindViewHolder(SpendingViewHolder holder, int i) {
-        SpendingViewHolder.spendingName.setText(spendings.get(i).name);
-        SpendingViewHolder.spendingPrice.setText(spendings.get(i).price.toString() + "€");
+        holder.spendingName.setText(spendings.get(i).name);
+        holder.spendingPrice.setText(spendings.get(i).price.toString() + "€");
 
     }
 

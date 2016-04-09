@@ -18,28 +18,29 @@ import android.widget.Toolbar;
 
 import junit.framework.Test;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by kenzakhamaily on 24/03/2016.
  */
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CategoryViewHolder> {
-    static List<Category> categories;
-    private static Context context;
+    private List<Category> categories = Collections.emptyList();
+    private Context context;
 
     public RVAdapter(List<Category> categories, Context context) {
         this.categories = categories;
         this.context = context;
     }
 
-    public static class CategoryViewHolder extends RecyclerView.ViewHolder{
+    public class CategoryViewHolder extends RecyclerView.ViewHolder{
         CardView cv;
-        static TextView categName;
-        static TextView categBudget;
-        static ProgressBar cProgress;
-        static TextView progressText;
-        static TextView spentMoney;
-        static Toolbar toolbar;
+        TextView categName;
+        TextView categBudget;
+        ProgressBar cProgress;
+        TextView progressText;
+        TextView spentMoney;
+        Toolbar toolbar;
 
         public CategoryViewHolder(View itemView) {
             super(itemView);
@@ -61,6 +62,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CategoryViewHolder
                                 case R.id.category_edit:
                                     break;
                                 case R.id.category_delete:
+                                    int i = getPosition();
+                                    Category cat = categories.get(i);
+                                    remove(cat);
                                     break;
                             }
                             return true;
@@ -70,12 +74,13 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CategoryViewHolder
                 @Override
                 public void onClick(View v) {
                     int i = getPosition();
+                    String position = Integer.toString(i);
                     Category cat = categories.get(i);
                     String tag = "Info";
-                    Log.i(tag,"onClick event on category "+cat.getName());
+                    Log.i(tag, "onClick event on category " + cat.getName() + " " + i);
                     Intent versCategorySpendings = new Intent(context,CategorySpendings.class);
                     versCategorySpendings.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    //versCategorySpendings.putExtra("category_id", i);
+                    //versCategorySpendings.putExtra("category_id", position);
                     versCategorySpendings.putExtra("category_name", cat.getName());
                     context.startActivity(versCategorySpendings);
                     //Rediriger vers l'activité CategorySpendings
@@ -84,21 +89,6 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CategoryViewHolder
                 }
             });
         }
-
-        /*@Override
-        public void onClick(View v) {
-            int i = getPosition();
-            Category cat = categories.get(i);
-            Context context = v.getContext();
-            String tag = "Info";
-            Log.i(tag,"onClick event on category "+cat.getName());
-            Intent versCategorySpendings = new Intent(context,CategorySpendings.class);
-            versCategorySpendings.putExtra("category_id", i);
-            versCategorySpendings.putExtra("category_name", cat.getName());
-            context.startActivity(versCategorySpendings);
-            //Rediriger vers l'activité CategorySpendings
-            //Pouvoir passer en paramètre le nom de la catégorie et ses dépenses
-        }*/
     }
 
     public void add(Category item, int position) {
@@ -110,6 +100,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CategoryViewHolder
         int position = categories.indexOf(item);
         categories.remove(position);
         notifyItemRemoved(position);
+        notifyItemRangeChanged(position, categories.size());
     }
 
     @Override
@@ -121,12 +112,12 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CategoryViewHolder
 
     @Override
     public void onBindViewHolder(CategoryViewHolder holder, int i) {
-        CategoryViewHolder.categName.setText(categories.get(i).name);
-        CategoryViewHolder.categBudget.setText(categories.get(i).budget.toString() + "€");
-        CategoryViewHolder.cProgress.setProgress(categories.get(i).bProgress);
-        CategoryViewHolder.progressText.setText(categories.get(i).bProgress+"%");
+        holder.categName.setText(categories.get(i).name);
+        holder.categBudget.setText(categories.get(i).budget.toString() + "€");
+        holder.cProgress.setProgress(categories.get(i).bProgress);
+        holder.progressText.setText(categories.get(i).bProgress+"%");
         double spentM = ((categories.get(i).budget * categories.get(i).bProgress)/100);
-        CategoryViewHolder.spentMoney.setText("-"+String.valueOf(spentM)+"€");
+        holder.spentMoney.setText("-"+String.valueOf(spentM)+"€");
     }
 
     @Override

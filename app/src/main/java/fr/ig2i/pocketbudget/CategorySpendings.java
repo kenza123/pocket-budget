@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 public class CategorySpendings extends AppCompatActivity {
 
@@ -14,6 +15,10 @@ public class CategorySpendings extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         String categoryName = extras.getString("category_name");
+        //String categoryId = extras.getString("category_id");
+        //Log.i("tag",categoryId);
+        //int id = Integer.parseInt(categoryId);
+
         setTitle(categoryName);
 
         //Here we can after extract data from dataBase and intialize data
