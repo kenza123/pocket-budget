@@ -2,10 +2,7 @@ package fr.ig2i.pocketbudget.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by kenzakhamaily on 07/04/2016.
@@ -16,8 +13,6 @@ public class Spending implements Parcelable {
     private Category category;
     private Double amount;
     private Date created_at;
-
-    private List<Spending> categorySpendings;
 
     public Spending() {
     }
@@ -73,18 +68,6 @@ public class Spending implements Parcelable {
 
     public void setCreated_at(Date created_at) {
         this.created_at = created_at;
-    }
-
-    public List<Spending> getCategorySpendings() {
-        return categorySpendings;
-    }
-
-    public void initializeData(){
-        categorySpendings = new ArrayList<Spending>();
-        categorySpendings.add(new Spending("Robe Zara",100.00));
-        categorySpendings.add(new Spending("Pantalon Stradivarius",25.00));
-        categorySpendings.add(new Spending("Sac à main Stradivarius",30.00));
-
     }
 
     @Override
