@@ -1,5 +1,6 @@
 package fr.ig2i.pocketbudget.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ public class Earnings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         gs = (GlobalState) getApplication();
         setContentView(R.layout.activity_earnings);
+        Context context = Earnings.this;
 
         EarningService earningService = new EarningService(gs.getApplicationContext());
 
@@ -30,7 +32,7 @@ public class Earnings extends AppCompatActivity {
         LinearLayoutManager llm = new LinearLayoutManager(this);
         rv.setLayoutManager(llm);
 
-        EarningRVAdapter adapter = new EarningRVAdapter(earningService.getAllEarningsOfTheMonth());
+        EarningRVAdapter adapter = new EarningRVAdapter(earningService.getAllEarningsOfTheMonth(), context);
         rv.setAdapter(adapter);
     }
 

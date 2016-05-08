@@ -1,5 +1,7 @@
 package fr.ig2i.pocketbudget.adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,7 +14,10 @@ import android.widget.Toolbar;
 
 import java.util.List;
 
+import fr.ig2i.pocketbudget.GlobalState;
 import fr.ig2i.pocketbudget.R;
+import fr.ig2i.pocketbudget.activity.AddEarning;
+import fr.ig2i.pocketbudget.activity.Earnings;
 import fr.ig2i.pocketbudget.model.Earning;
 import fr.ig2i.pocketbudget.model.Spending;
 import fr.ig2i.pocketbudget.service.EarningService;
@@ -22,10 +27,11 @@ import fr.ig2i.pocketbudget.service.EarningService;
  */
 public class EarningRVAdapter extends RecyclerView.Adapter<EarningRVAdapter.EarningViewHolder> {
     List<Earning> earnings;
-    //EarningService earningService = new EarningService();
+    private Context context;
 
-    public EarningRVAdapter(List<Earning> earnings) {
+    public EarningRVAdapter(List<Earning> earnings, Context context) {
         this.earnings = earnings;
+        this.context = context;
     }
 
     public class EarningViewHolder extends RecyclerView.ViewHolder {
@@ -47,13 +53,16 @@ public class EarningRVAdapter extends RecyclerView.Adapter<EarningRVAdapter.Earn
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             int id = item.getItemId();
+                            int i = getPosition();
+                            Earning earning = earnings.get(i);
                             switch (id) {
                                 case R.id.edit:
+                                    Intent versAddEarning = new Intent(context, AddEarning.class);
+                                    versAddEarning.putExtra("earning",earning);
+                                    context.startActivity(versAddEarning);
                                     break;
                                 case R.id.delete:
-                                    int i = getPosition();
-                                    Earning cat = earnings.get(i);
-                                    remove(cat);
+                                    remove(earning);
                                     break;
                             }
                             return true;

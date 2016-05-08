@@ -28,6 +28,8 @@ public class AddEarning extends AppCompatActivity implements View.OnClickListene
     private EditText edtDate;
     private Button btnCreate;
 
+    private Earning earningToUpdate;
+
     private DatePickerDialog datePickerDialog;
     private SimpleDateFormat dateFormatter;
 
@@ -36,6 +38,11 @@ public class AddEarning extends AppCompatActivity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         gs = (GlobalState) getApplication();
         setContentView(R.layout.activity_add_earning);
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            earningToUpdate = extras.getParcelable("earning");
+        }
 
         dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
 
@@ -58,6 +65,13 @@ public class AddEarning extends AppCompatActivity implements View.OnClickListene
             }
 
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+
+        if(earningToUpdate != null){
+            edtLabel.setText(earningToUpdate.getLabel());
+            edtAmount.setText(Double.toString(earningToUpdate.getAmount()));
+            edtDate.setText(dateFormatter.format(earningToUpdate.getDate()));
+            btnCreate.setText("Modifier");
+        }
     }
 
 
@@ -65,13 +79,23 @@ public class AddEarning extends AppCompatActivity implements View.OnClickListene
     public void onClick(View v) {
         if(v == btnCreate){
             if(valideFields()){
-                Earning earning = new Earning();
-                earning.setLabel(edtLabel.getText().toString());
-                earning.setAmount(Double.parseDouble(edtAmount.getText().toString()));
-                earning.setDate(new Date(edtDate.getText().toString()));
+                if(earningToUpdate != null){
+                    earningToUpdate.setLabel(edtLabel.getText().toString());
+                    earningToUpdate.setAmount(Double.parseDouble(edtAmount.getText().toString()));
+                    earningToUpdate.setDate(new Date(edtDate.getText().toString()));
 
-                EarningService earningService = new EarningService(gs.getApplicationContext());
-                earningService.addEarning(earning);
+                    EarningService earningService = new EarningService(gs.getApplicationContext());
+                    earningService.updateEarning(earningToUpdate);
+                }
+                else{
+                    Earning earning = new Earning();
+                    earning.setLabel(edtLabel.getText().toString());
+                    earning.setAmount(Double.parseDouble(edtAmount.getText().toString()));
+                    earning.setDate(new Date(edtDate.getText().toString()));
+
+                    EarningService earningService = new EarningService(gs.getApplicationContext());
+                    earningService.addEarning(earning);
+                }
                 Intent versEarnings = new Intent(this,Earnings.class);
                 versEarnings.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(versEarnings);

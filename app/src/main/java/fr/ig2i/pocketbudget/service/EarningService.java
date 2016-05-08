@@ -44,10 +44,11 @@ public class EarningService {
         //modify the balance file
     }
 
-    public void updateEarning(){
-        //check if the earning exist??
-        //call update from dao
-        //modify the balance file
+    public void updateEarning(Earning earning){
+        if (earningDAO.getEarningById(earning.getId()) != null) {
+            earningDAO.updateEarning(earning);
+            //modify the balance file
+        }
     }
 
     public void deleteEarning(Earning earning){

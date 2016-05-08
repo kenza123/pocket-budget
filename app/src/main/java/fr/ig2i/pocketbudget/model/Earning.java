@@ -29,10 +29,10 @@ public class Earning implements Parcelable {
     }
 
     private Earning(Parcel in) {
-        id = in.readInt();
-        label = in.readString();
-        amount = in.readDouble();
-        date = new Date(in.readLong());;
+        this.id = in.readInt();
+        this.label = in.readString();
+        this.amount = in.readDouble();
+        this.date = new Date(in.readLong());;
     }
 
     public int getId() {
