@@ -14,6 +14,7 @@ import fr.ig2i.pocketbudget.model.Category;
  */
 public class CategoryDAO extends DataBaseDAO {
 
+    private static CategoryDAO instance;
     private static final String WHERE_ID_EQUALS = DataBaseHelper.ID_COLUMN
             + " =?";
     private String[] allColumns= { DataBaseHelper.ID_COLUMN, DataBaseHelper.LABEL_COLUMN,
@@ -21,6 +22,12 @@ public class CategoryDAO extends DataBaseDAO {
 
     public CategoryDAO(Context context) {
         super(context);
+    }
+
+    public static CategoryDAO getInstance(Context context) {
+        if(instance == null)
+            instance = new CategoryDAO(context);
+        return instance;
     }
 
     public long createCategory(Category category) {

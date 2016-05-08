@@ -3,22 +3,16 @@ package fr.ig2i.pocketbudget;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.CookieHandler;
 import java.net.CookieManager;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+
+import fr.ig2i.pocketbudget.dao.CategoryDAO;
+import fr.ig2i.pocketbudget.dao.SpendingDAO;
+import fr.ig2i.pocketbudget.service.EarningService;
 
 /**
  * Created by kenzakhamaily on 04/03/2016.
@@ -47,6 +41,18 @@ public class GlobalState extends Application{
 
     public static Context getAppContext() {
         return GlobalState.context;
+    }
+
+    public EarningService getEarningService() {
+        return new EarningService(GlobalState.context);
+    }
+
+    public CategoryDAO getCategoryDAO() {
+        return new CategoryDAO(GlobalState.context);
+    }
+
+    public SpendingDAO getSpendingDAO() {
+        return new SpendingDAO(GlobalState.context);
     }
 
 }

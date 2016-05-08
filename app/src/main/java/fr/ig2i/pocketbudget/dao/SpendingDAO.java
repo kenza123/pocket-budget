@@ -13,6 +13,7 @@ import fr.ig2i.pocketbudget.model.Spending;
  */
 public class SpendingDAO extends DataBaseDAO {
 
+    private static SpendingDAO instance;
     private static final String WHERE_ID_EQUALS = DataBaseHelper.ID_COLUMN
             + " =?";
     private static final SimpleDateFormat formatter = new SimpleDateFormat(
@@ -23,6 +24,12 @@ public class SpendingDAO extends DataBaseDAO {
 
     public SpendingDAO(Context context) {
         super(context);
+    }
+
+    public static SpendingDAO getInstance(Context context) {
+        if(instance == null)
+            instance = new SpendingDAO(context);
+        return instance;
     }
 
     public long createSpending(Spending spending) {
