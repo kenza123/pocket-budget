@@ -17,17 +17,6 @@ public class Earning implements Parcelable {
     public Earning() {
     }
 
-    public Earning(String label, Double amount) {
-        this.label = label;
-        this.amount = amount;
-    }
-
-    public Earning(String label, Date date, Double amount) {
-        this.label = label;
-        this.date = date;
-        this.amount = amount;
-    }
-
     private Earning(Parcel in) {
         this.id = in.readInt();
         this.label = in.readString();

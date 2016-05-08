@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,15 +11,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import fr.ig2i.pocketbudget.GlobalState;
 import fr.ig2i.pocketbudget.R;
 import fr.ig2i.pocketbudget.activity.AddEarning;
 import fr.ig2i.pocketbudget.activity.Earnings;
 import fr.ig2i.pocketbudget.model.Earning;
-import fr.ig2i.pocketbudget.model.Spending;
-import fr.ig2i.pocketbudget.service.EarningService;
 
 /**
  * Created by kenzakhamaily on 09/04/2016.
@@ -28,17 +27,19 @@ import fr.ig2i.pocketbudget.service.EarningService;
 public class EarningRVAdapter extends RecyclerView.Adapter<EarningRVAdapter.EarningViewHolder> {
     List<Earning> earnings;
     private Context context;
+    GlobalState gs;
 
-    public EarningRVAdapter(List<Earning> earnings, Context context) {
+    public EarningRVAdapter(List<Earning> earnings, GlobalState gs, Context context) {
         this.earnings = earnings;
+        this.gs = gs;
         this.context = context;
     }
 
     public class EarningViewHolder extends RecyclerView.ViewHolder {
         CardView cv;
-        String tag;
         TextView earningName;
         TextView earningAmount;
+        TextView earningDate;
         Toolbar toolbar;
 
         public EarningViewHolder(View itemView) {
@@ -46,6 +47,7 @@ public class EarningRVAdapter extends RecyclerView.Adapter<EarningRVAdapter.Earn
             cv = (CardView) itemView.findViewById(R.id.cv_earning);
             earningName = (TextView) itemView.findViewById(R.id.earning_name);
             earningAmount = (TextView) itemView.findViewById(R.id.earning_amount);
+            earningDate = (TextView) itemView.findViewById(R.id.earning_date);
             toolbar = (Toolbar) itemView.findViewById(R.id.card_toolbar3);
             toolbar.inflateMenu(R.menu.card_toolbar);
             toolbar.setOnMenuItemClickListener(
@@ -67,14 +69,14 @@ public class EarningRVAdapter extends RecyclerView.Adapter<EarningRVAdapter.Earn
                             }
                             return true;
                         }
-            });
+                    });
         }
     }
 
     public void remove(Earning item) {
-        //show popup
         int position = earnings.indexOf(item);
         earnings.remove(position);
+        gs.getEarningService().deleteEarning(item);
         notifyItemRemoved(position);
     }
 
@@ -87,8 +89,10 @@ public class EarningRVAdapter extends RecyclerView.Adapter<EarningRVAdapter.Earn
 
     @Override
     public void onBindViewHolder(EarningViewHolder holder, int i) {
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
         holder.earningName.setText(earnings.get(i).getLabel());
         holder.earningAmount.setText(earnings.get(i).getAmount().toString() + "€");
+        holder.earningDate.setText(dateFormatter.format(earnings.get(i).getDate()));
     }
 
     @Override

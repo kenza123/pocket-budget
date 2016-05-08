@@ -3,7 +3,6 @@ package fr.ig2i.pocketbudget.service;
 import android.content.Context;
 import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import fr.ig2i.pocketbudget.dao.EarningDAO;
@@ -18,24 +17,21 @@ public class EarningService {
     private EarningDAO earningDAO;
 
     public EarningService(Context context) {
-        earningDAO = new EarningDAO(context);
+        earningDAO = EarningDAO.getInstance(context);
     }
 
     public List<Earning> getAllEarningsOfTheMonth(){
-        List<Earning> earnings = earningDAO.getAllEarnings();
+        List<Earning> earnings = earningDAO.getAllEarningsOfTheMonth();
 
         Log.i(TAG, " Show the earnings");
         for(Earning earning : earnings) {
             Log.i(TAG, earning.toString());
         }
-        //create an request in dao
-        //check if null
         return earnings;
     }
 
     public double countSumEarningsOfTheMonth(){
-        //create an request in dao
-        return 0.0;
+        return earningDAO.countSumEarningsOfTheMonth();
     }
 
     public void addEarning(Earning earning){
@@ -52,15 +48,8 @@ public class EarningService {
     }
 
     public void deleteEarning(Earning earning){
-        //check if the earning exist??
         earningDAO.deleteEarning(earning);
         Log.i(TAG, "The earning " + earning.toString() + "has been deleted");
-
-        List<Earning> earnings = earningDAO.getAllEarnings();
-        Log.i(TAG, " Show the earnings");
-        for(Earning item : earnings) {
-            Log.i(TAG, item.toString());
-        }
         //modify the  balance file
     }
 

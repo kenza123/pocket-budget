@@ -10,15 +10,14 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 import fr.ig2i.pocketbudget.GlobalState;
 import fr.ig2i.pocketbudget.R;
 import fr.ig2i.pocketbudget.model.Earning;
-import fr.ig2i.pocketbudget.service.EarningService;
 
 public class AddEarning extends AppCompatActivity implements View.OnClickListener {
 
@@ -31,12 +30,11 @@ public class AddEarning extends AppCompatActivity implements View.OnClickListene
     private Earning earningToUpdate;
 
     private DatePickerDialog datePickerDialog;
-    private SimpleDateFormat dateFormatter;
+    private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        gs = (GlobalState) getApplication();
         setContentView(R.layout.activity_add_earning);
 
         Bundle extras = getIntent().getExtras();
@@ -44,7 +42,7 @@ public class AddEarning extends AppCompatActivity implements View.OnClickListene
             earningToUpdate = extras.getParcelable("earning");
         }
 
-        dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+        gs = (GlobalState) getApplication();
 
         edtLabel = (EditText) findViewById(R.id.category_label_editText);
         edtAmount = (EditText) findViewById(R.id.category_amount_editText);
@@ -80,21 +78,27 @@ public class AddEarning extends AppCompatActivity implements View.OnClickListene
         if(v == btnCreate){
             if(valideFields()){
                 if(earningToUpdate != null){
-                    earningToUpdate.setLabel(edtLabel.getText().toString());
-                    earningToUpdate.setAmount(Double.parseDouble(edtAmount.getText().toString()));
-                    earningToUpdate.setDate(new Date(edtDate.getText().toString()));
+                    try {
+                        earningToUpdate.setLabel(edtLabel.getText().toString());
+                        earningToUpdate.setAmount(Double.parseDouble(edtAmount.getText().toString()));
+                        earningToUpdate.setDate(dateFormatter.parse(edtDate.getText().toString()));
 
-                    EarningService earningService = new EarningService(gs.getApplicationContext());
-                    earningService.updateEarning(earningToUpdate);
+                        gs.getEarningService().updateEarning(earningToUpdate);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 }
                 else{
-                    Earning earning = new Earning();
-                    earning.setLabel(edtLabel.getText().toString());
-                    earning.setAmount(Double.parseDouble(edtAmount.getText().toString()));
-                    earning.setDate(new Date(edtDate.getText().toString()));
+                    try {
+                        Earning earning = new Earning();
+                        earning.setLabel(edtLabel.getText().toString());
+                        earning.setAmount(Double.parseDouble(edtAmount.getText().toString()));
+                        earning.setDate(dateFormatter.parse(edtDate.getText().toString()));
 
-                    EarningService earningService = new EarningService(gs.getApplicationContext());
-                    earningService.addEarning(earning);
+                        gs.getEarningService().addEarning(earning);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 }
                 Intent versEarnings = new Intent(this,Earnings.class);
                 versEarnings.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

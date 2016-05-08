@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import fr.ig2i.pocketbudget.GlobalState;
 import fr.ig2i.pocketbudget.R;
 import fr.ig2i.pocketbudget.adapter.EarningRVAdapter;
-import fr.ig2i.pocketbudget.service.EarningService;
 
 public class Earnings extends AppCompatActivity {
 
@@ -25,14 +24,12 @@ public class Earnings extends AppCompatActivity {
         setContentView(R.layout.activity_earnings);
         Context context = Earnings.this;
 
-        EarningService earningService = new EarningService(gs.getApplicationContext());
-
         RecyclerView rv = (RecyclerView) findViewById(R.id.rv_earning);
         rv.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         rv.setLayoutManager(llm);
 
-        EarningRVAdapter adapter = new EarningRVAdapter(earningService.getAllEarningsOfTheMonth(), context);
+        EarningRVAdapter adapter = new EarningRVAdapter(gs.getEarningService().getAllEarningsOfTheMonth(), gs, context);
         rv.setAdapter(adapter);
     }
 
