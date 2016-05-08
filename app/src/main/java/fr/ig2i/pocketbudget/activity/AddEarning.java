@@ -75,9 +75,9 @@ public class AddEarning extends AppCompatActivity implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        if(v == btnCreate){
-            if(valideFields()){
-                if(earningToUpdate != null){
+        if(v == btnCreate) {
+            if(valideFields()) {
+                if(earningToUpdate != null) {
                     try {
                         earningToUpdate.setLabel(edtLabel.getText().toString());
                         earningToUpdate.setAmount(Double.parseDouble(edtAmount.getText().toString()));
@@ -87,8 +87,7 @@ public class AddEarning extends AppCompatActivity implements View.OnClickListene
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                }
-                else{
+                } else {
                     try {
                         Earning earning = new Earning();
                         earning.setLabel(edtLabel.getText().toString());

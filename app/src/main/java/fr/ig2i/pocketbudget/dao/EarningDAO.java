@@ -99,7 +99,8 @@ public class EarningDAO extends DataBaseDAO {
 
         Cursor cursor = database.rawQuery("select sum(" + DataBaseHelper.AMOUNT_COLUMN +
                 ") from " + DataBaseHelper.EARNING_TABLE +
-                " where " + DataBaseHelper.DATE_COLUMN + " >= '" + formatter.format(c.getTime()) + "'", null);
+                " where " + DataBaseHelper.DATE_COLUMN + " >= '" +
+                formatter.format(c.getTime()) + "'", null);
         if (cursor != null ) {
             cursor.moveToFirst();
         }

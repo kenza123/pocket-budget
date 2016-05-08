@@ -18,7 +18,6 @@ import java.util.Locale;
 import fr.ig2i.pocketbudget.GlobalState;
 import fr.ig2i.pocketbudget.R;
 import fr.ig2i.pocketbudget.activity.AddEarning;
-import fr.ig2i.pocketbudget.activity.Earnings;
 import fr.ig2i.pocketbudget.model.Earning;
 
 /**

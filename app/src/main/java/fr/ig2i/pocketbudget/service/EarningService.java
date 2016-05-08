@@ -43,6 +43,7 @@ public class EarningService {
     public void updateEarning(Earning earning){
         if (earningDAO.getEarningById(earning.getId()) != null) {
             earningDAO.updateEarning(earning);
+            Log.i(TAG, "The earning " + earning.toString() + "has been updated");
             //modify the balance file
         }
     }
