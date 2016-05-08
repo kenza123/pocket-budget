@@ -5,4 +5,5 @@
     <string name="earnings">Revenus</string>
     <string name="categorySpendings">Catégorie</string>
     <string name="newCategory">Nouvelle Catégorie</string>
+    <string name="newEarning">Nouveau Revenu</string>
 </resources>
