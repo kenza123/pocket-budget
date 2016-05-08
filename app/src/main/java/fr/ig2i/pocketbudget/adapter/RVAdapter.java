@@ -59,9 +59,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CategoryViewHolder
                         public boolean onMenuItemClick(MenuItem item) {
                             int id = item.getItemId();
                             switch (id) {
-                                case R.id.category_edit:
+                                case R.id.edit:
                                     break;
-                                case R.id.category_delete:
+                                case R.id.delete:
                                     int i = getPosition();
                                     Category cat = categories.get(i);
                                     remove(cat);

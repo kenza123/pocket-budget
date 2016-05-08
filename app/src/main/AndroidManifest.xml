@@ -3,6 +3,7 @@
     package="fr.ig2i.pocketbudget">
 
     <application
+        android:name=".GlobalState"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -28,7 +29,10 @@
             android:label="@string/categorySpendings" />
         <activity
             android:name=".activity.AddCategory"
-            android:label="@string/newCategory"/>
+            android:label="@string/newCategory" />
+        <activity
+            android:name=".activity.AddEarning"
+            android:label="@string/newEarning" />
     </application>
 
 </manifest>

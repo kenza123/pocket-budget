@@ -68,6 +68,19 @@ public class EarningDAO extends DataBaseDAO {
         return earnings;
     }
 
+    public List<Earning> getAllEarningsOfTheMonth() {
+        List<Earning> earnings = new ArrayList<Earning>();
+        Cursor cursor = database.query(DataBaseHelper.EARNING_TABLE,
+                allColumns, null, null, null, null, null);
+
+        while (cursor.moveToNext()) {
+            Earning earning = cursorToEarning(cursor);
+            earnings.add(earning);
+        }
+        cursor.close();
+        return earnings;
+    }
+
     public Earning getEarningById(int id) {
         Cursor cursor = database.query(DataBaseHelper.EARNING_TABLE,
                 allColumns, WHERE_ID_EQUALS, new String[] { String.valueOf(id)},
