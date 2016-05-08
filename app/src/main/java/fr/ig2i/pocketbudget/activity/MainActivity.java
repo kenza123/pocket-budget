@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.Date;
 import java.util.List;
 
+import fr.ig2i.pocketbudget.GlobalState;
 import fr.ig2i.pocketbudget.R;
 import fr.ig2i.pocketbudget.dao.DataBaseHelper;
 import fr.ig2i.pocketbudget.dao.EarningDAO;
@@ -19,11 +21,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     RelativeLayout spending;
     RelativeLayout earning;
+    private GlobalState gs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        gs = (GlobalState) getApplication();
         /*EarningDAO earningDAO = new  EarningDAO(getApplicationContext());
 
         Earning earning1 = new Earning("Salaire", new Date() , 1000.0);
@@ -38,6 +42,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         spending = (RelativeLayout) findViewById(R.id.spending);
         spending.setOnClickListener(this);
         earning = (RelativeLayout) findViewById(R.id.earning);
+
+        TextView earningAmount =  (TextView) findViewById(R.id.earning_amount);
+        earningAmount.setText(Double.toString(gs.getEarningService().countSumEarningsOfTheMonth())+"€");
         earning.setOnClickListener(this);
     }
 
