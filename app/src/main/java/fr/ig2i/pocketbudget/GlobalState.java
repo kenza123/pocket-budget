@@ -52,7 +52,7 @@ public class GlobalState extends Application{
     }
 
     public SpendingService getSpendingService() {
-        return new SpendingService();
+        return new SpendingService(GlobalState.context);
     }
 
 }

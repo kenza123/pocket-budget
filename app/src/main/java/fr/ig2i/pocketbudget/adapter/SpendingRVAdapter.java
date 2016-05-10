@@ -1,5 +1,6 @@
 package fr.ig2i.pocketbudget.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.Toolbar;
 
 import java.util.List;
 
+import fr.ig2i.pocketbudget.GlobalState;
 import fr.ig2i.pocketbudget.R;
 import fr.ig2i.pocketbudget.model.Spending;
 
@@ -18,9 +20,12 @@ import fr.ig2i.pocketbudget.model.Spending;
  */
 public class SpendingRVAdapter extends RecyclerView.Adapter<SpendingRVAdapter.SpendingViewHolder>{
     List<Spending> spendings;
+    private Context context;
+    private GlobalState gs;
 
-    public SpendingRVAdapter(List<Spending> spendings) {
-        this.spendings = spendings;
+    public SpendingRVAdapter(GlobalState gs) {
+        this.gs = gs;
+        this.spendings = gs.getSpendingService().getAllSpendings();
     }
 
     public class SpendingViewHolder extends RecyclerView.ViewHolder {
@@ -54,6 +59,7 @@ public class SpendingRVAdapter extends RecyclerView.Adapter<SpendingRVAdapter.Sp
     @Override
     public SpendingViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.spending_item, parent, false);
+        this.context = parent.getContext();
         SpendingViewHolder svh = new SpendingViewHolder(v);
         return svh;
     }
