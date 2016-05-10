@@ -1,6 +1,5 @@
 package fr.ig2i.pocketbudget.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,26 +8,27 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import fr.ig2i.pocketbudget.GlobalState;
 import fr.ig2i.pocketbudget.R;
-import fr.ig2i.pocketbudget.adapter.RVAdapter;
-import fr.ig2i.pocketbudget.model.Category;
-import fr.ig2i.pocketbudget.service.CategoryService;
+import fr.ig2i.pocketbudget.adapter.CategoryRVAdapter;
 
-public class Spendings extends AppCompatActivity {
+public class Categories extends AppCompatActivity {
+
+    private GlobalState gs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        gs = (GlobalState) getApplication();
         setContentView(R.layout.activity_spendings);
 
-        Context context = this.getApplicationContext();
-        CategoryService categoryService = new CategoryService();
-        List<Category> categories = new ArrayList<Category>();
+        RecyclerView rv = (RecyclerView)findViewById(R.id.rv);
+        rv.setHasFixedSize(true);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        rv.setLayoutManager(llm);
 
-        categories = categoryService.getAllCategories();
+        CategoryRVAdapter adapter = new CategoryRVAdapter(gs);
+        rv.setAdapter(adapter);
 
         /*Bundle extras = getIntent().getExtras();
         if (extras != null){
@@ -38,13 +38,6 @@ public class Spendings extends AppCompatActivity {
             categories.add(new Category(new_categ_label,new_categ_budget,new_categ_treshold,0));
         }*/
 
-        RecyclerView rv = (RecyclerView)findViewById(R.id.rv);
-        rv.setHasFixedSize(true);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        rv.setLayoutManager(llm);
-
-        RVAdapter adapter = new RVAdapter(categories, context);
-        rv.setAdapter(adapter);
     }
 
     @Override

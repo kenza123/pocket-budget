@@ -19,8 +19,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.Spendings"
-            android:label="@string/spendings" />
+            android:name=".activity.Categories"
+            android:label="@string/categories" />
         <activity
             android:name=".activity.Earnings"
             android:label="@string/earnings" />
