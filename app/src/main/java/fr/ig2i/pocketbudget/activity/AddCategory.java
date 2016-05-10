@@ -19,32 +19,56 @@ public class AddCategory extends AppCompatActivity implements View.OnClickListen
     EditText edtTreshold;
     Button btnCreate;
 
+    private Category categoryToUpdate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_category);
 
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            categoryToUpdate = extras.getParcelable("category");
+        }
+
         gs = (GlobalState) getApplication();
+
         edtLabel = (EditText) findViewById(R.id.category_label_editText);
         edtBudget = (EditText) findViewById(R.id.category_budget_editText);
         edtTreshold = (EditText) findViewById(R.id.category_treshold_editText);
         btnCreate = (Button) findViewById(R.id.create_button);
         btnCreate.setOnClickListener(this);
+
+        if (categoryToUpdate != null) {
+            edtLabel.setText(categoryToUpdate.getLabel());
+            edtBudget.setText(Double.toString(categoryToUpdate.getBudget()));
+            edtTreshold.setText(Double.toString(categoryToUpdate.getWarningThreshold()));
+            btnCreate.setText("Modifier");
+        }
     }
 
     @Override
     public void onClick(View v) {
         if(valideFields()) {
-            Category category = new Category();
-            category.setLabel(edtLabel.getText().toString());
-            category.setBudget(Double.parseDouble(edtBudget.getText().toString()));
-            category.setWarningThreshold(Double.parseDouble(edtTreshold.getText().toString()));
+            if(categoryToUpdate != null){
+                categoryToUpdate.setLabel(edtLabel.getText().toString());
+                categoryToUpdate.setBudget(Double.parseDouble(edtBudget.getText().toString()));
+                categoryToUpdate.setWarningThreshold(Double.parseDouble(edtTreshold.getText().toString()));
 
-            gs.getCategoryService().addCategory(category);
+                gs.getCategoryService().updateCategory(categoryToUpdate);
+            }
+            else{
+                Category category = new Category();
+                category.setLabel(edtLabel.getText().toString());
+                category.setBudget(Double.parseDouble(edtBudget.getText().toString()));
+                category.setWarningThreshold(Double.parseDouble(edtTreshold.getText().toString()));
 
-            Intent versSpendings = new Intent(this,Categories.class);
-            versSpendings.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(versSpendings);
+                gs.getCategoryService().addCategory(category);
+            }
+
+            Intent versCategories = new Intent(this,Categories.class);
+            versCategories.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(versCategories);
             finish();
         } else {
         gs.alerter("Données invalides");

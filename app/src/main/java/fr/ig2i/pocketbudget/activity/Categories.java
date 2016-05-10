@@ -29,15 +29,6 @@ public class Categories extends AppCompatActivity {
 
         CategoryRVAdapter adapter = new CategoryRVAdapter(gs);
         rv.setAdapter(adapter);
-
-        /*Bundle extras = getIntent().getExtras();
-        if (extras != null){
-            String new_categ_label = extras.getString("new_categ_label");
-            Double new_categ_budget = extras.getDouble("new_categ_budget");
-            Double new_categ_treshold = extras.getDouble("new_categ_treshold");
-            categories.add(new Category(new_categ_label,new_categ_budget,new_categ_treshold,0));
-        }*/
-
     }
 
     @Override

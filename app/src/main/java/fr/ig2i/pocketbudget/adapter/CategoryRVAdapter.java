@@ -16,6 +16,8 @@ import android.widget.Toolbar;
 import java.util.List;
 
 import fr.ig2i.pocketbudget.GlobalState;
+import fr.ig2i.pocketbudget.activity.AddCategory;
+import fr.ig2i.pocketbudget.activity.AddEarning;
 import fr.ig2i.pocketbudget.activity.CategorySpendings;
 import fr.ig2i.pocketbudget.R;
 import fr.ig2i.pocketbudget.model.Category;
@@ -62,6 +64,9 @@ public class CategoryRVAdapter extends RecyclerView.Adapter<CategoryRVAdapter.Ca
                             Category category = categories.get(i);
                             switch (id) {
                                 case R.id.edit:
+                                    Intent versAddCategory = new Intent(context, AddCategory.class);
+                                    versAddCategory.putExtra("category",category);
+                                    context.startActivity(versAddCategory);
                                     break;
                                 case R.id.delete:
                                     remove(category);
