@@ -53,6 +53,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         TextView earningAmount =  (TextView) findViewById(R.id.earning_amount);
         earningAmount.setText(Double.toString(gs.getEarningService().countSumEarningsOfTheMonth())+"€");
+
+        TextView budgetAmount =  (TextView) findViewById(R.id.budget_amount);
+        budgetAmount.setText(Double.toString(gs.getCategoryService().countTheTotalBudget())+"€");
+
         earning.setOnClickListener(this);
     }
 
@@ -66,13 +70,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onRestart();
         TextView earningAmount =  (TextView) findViewById(R.id.earning_amount);
         earningAmount.setText(Double.toString(gs.getEarningService().countSumEarningsOfTheMonth())+"€");
+
+        TextView budgetAmount =  (TextView) findViewById(R.id.budget_amount);
+        budgetAmount.setText(Double.toString(gs.getCategoryService().countTheTotalBudget()) + "€");
     }
 
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.spending :
-                Intent versSpendings = new Intent(this,Spendings.class);
+                Intent versSpendings = new Intent(this,Categories.class);
                 startActivity(versSpendings);
                 break;
             case R.id.earning:
