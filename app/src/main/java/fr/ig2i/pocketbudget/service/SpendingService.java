@@ -16,8 +16,8 @@ public class SpendingService {
     private static final String TAG = "SpendingService";
     private SpendingDAO spendingDAO;
 
-    public SpendingService() {
-        //spendingDAO = SpendingDAO.getInstance(context);
+    public SpendingService(Context context) {
+        spendingDAO = SpendingDAO.getInstance(context);
     }
 
     public List<Spending> getAllSpendings(){

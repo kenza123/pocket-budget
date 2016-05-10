@@ -31,8 +31,8 @@ public class EarningRVAdapter extends RecyclerView.Adapter<EarningRVAdapter.Earn
     String TAG = "EarningRVAdapter";
 
     public EarningRVAdapter(GlobalState gs) {
-        this.earnings = gs.getEarningService().getAllEarningsOfTheMonth();
         this.gs = gs;
+        this.earnings = gs.getEarningService().getAllEarningsOfTheMonth();
     }
 
     public class EarningViewHolder extends RecyclerView.ViewHolder {

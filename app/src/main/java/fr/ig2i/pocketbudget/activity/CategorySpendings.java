@@ -7,15 +7,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import fr.ig2i.pocketbudget.GlobalState;
 import fr.ig2i.pocketbudget.R;
 import fr.ig2i.pocketbudget.adapter.SpendingRVAdapter;
 import fr.ig2i.pocketbudget.service.SpendingService;
 
 public class CategorySpendings extends AppCompatActivity {
 
+    private GlobalState gs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        gs = (GlobalState) getApplication();
         setContentView(R.layout.activity_category_spendings);
 
         Bundle extras = getIntent().getExtras();
@@ -26,15 +30,12 @@ public class CategorySpendings extends AppCompatActivity {
 
         setTitle(categoryName);
 
-        //Here we can after extract data from dataBase and intialize data
-        SpendingService spendingService = new SpendingService();
-
         RecyclerView rv = (RecyclerView) findViewById(R.id.rv_spending);
         rv.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         rv.setLayoutManager(llm);
 
-        SpendingRVAdapter adapter = new SpendingRVAdapter(spendingService.getAllSpendings());
+        SpendingRVAdapter adapter = new SpendingRVAdapter(gs);
         rv.setAdapter(adapter);
     }
 
