@@ -9,22 +9,28 @@ import android.view.MenuItem;
 
 import fr.ig2i.pocketbudget.R;
 import fr.ig2i.pocketbudget.adapter.SpendingRVAdapter;
+import fr.ig2i.pocketbudget.model.Category;
 import fr.ig2i.pocketbudget.service.SpendingService;
 
 public class CategorySpendings extends AppCompatActivity {
-
+    private Category categoryToDisplay;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_spendings);
 
         Bundle extras = getIntent().getExtras();
-        String categoryName = extras.getString("category_name");
-        //String categoryId = extras.getString("category_id");
-        //Log.i("tag",categoryId);
-        //int id = Integer.parseInt(categoryId);
-
-        setTitle(categoryName);
+        if(extras != null){
+            categoryToDisplay = extras.getParcelable("category");
+            if(categoryToDisplay != null){
+                //requete pour récupérer la liste des spendings de cette categorie
+                setTitle(categoryToDisplay.getLabel());
+                //SpendingRVAdapter adapter = new SpendingRVAdapter(spendingService.getAllSpendingsOfCategory(CategoryToDisplay));
+                //...
+            }
+        }else{
+            //don't no!
+        }
 
         //Here we can after extract data from dataBase and intialize data
         SpendingService spendingService = new SpendingService();
