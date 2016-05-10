@@ -9,6 +9,15 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".activity.CategorySpendings">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/message"
+        android:gravity="center_horizontal"
+        android:text="Les dépenses de ce mois"
+        android:textSize="12dp"
+        android:textColor="#979797" />
+
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

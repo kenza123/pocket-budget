@@ -1,15 +1,21 @@
 package fr.ig2i.pocketbudget.activity;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -52,6 +58,25 @@ public class AddEarning extends AppCompatActivity implements View.OnClickListene
         edtDate.setInputType(InputType.TYPE_NULL);
         btnCreate = (Button) findViewById(R.id.create_button);
 
+        edtAmount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        });
+        edtLabel.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        });
+
         btnCreate.setOnClickListener(this);
         edtDate.setOnClickListener(this);
 
@@ -66,7 +91,7 @@ public class AddEarning extends AppCompatActivity implements View.OnClickListene
 
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 
-        if(earningToUpdate != null){
+        if (earningToUpdate != null) {
             edtLabel.setText(earningToUpdate.getLabel());
             edtAmount.setText(Double.toString(earningToUpdate.getAmount()));
             edtDate.setText(dateFormatter.format(earningToUpdate.getDate()));
