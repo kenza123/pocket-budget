@@ -13,24 +13,24 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
-import java.util.Collections;
 import java.util.List;
 
+import fr.ig2i.pocketbudget.GlobalState;
 import fr.ig2i.pocketbudget.activity.CategorySpendings;
 import fr.ig2i.pocketbudget.R;
 import fr.ig2i.pocketbudget.model.Category;
-import fr.ig2i.pocketbudget.model.Earning;
 
 /**
  * Created by kenzakhamaily on 24/03/2016.
  */
-public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CategoryViewHolder> {
-    private List<Category> categories = Collections.emptyList();
+public class CategoryRVAdapter extends RecyclerView.Adapter<CategoryRVAdapter.CategoryViewHolder> {
+    GlobalState gs;
+    private List<Category> categories;
     private Context context;
 
-    public RVAdapter(List<Category> categories, Context context) {
-        this.categories = categories;
-        this.context = context;
+    public CategoryRVAdapter(GlobalState gs) {
+        this.gs = gs;
+        this.categories = gs.getCategoryService().getAllNotDeletedCategories();
     }
 
     public class CategoryViewHolder extends RecyclerView.ViewHolder{
@@ -58,13 +58,13 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CategoryViewHolder
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             int id = item.getItemId();
+                            int i = getPosition();
+                            Category category = categories.get(i);
                             switch (id) {
                                 case R.id.edit:
                                     break;
                                 case R.id.delete:
-                                    int i = getPosition();
-                                    Category cat = categories.get(i);
-                                    remove(cat);
+                                    remove(category);
                                     break;
                             }
                             return true;
@@ -99,12 +99,14 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CategoryViewHolder
     public void remove(Category item) {
         int position = categories.indexOf(item);
         categories.remove(position);
+        gs.getCategoryService().deleteCategory(item);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, categories.size());
     }
 
     @Override
     public CategoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        this.context = parent.getContext();
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.category_item, parent, false);
         CategoryViewHolder cvh = new CategoryViewHolder(v);
         return cvh;
@@ -114,9 +116,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CategoryViewHolder
     public void onBindViewHolder(CategoryViewHolder holder, int i) {
         holder.categName.setText(categories.get(i).getLabel());
         holder.categBudget.setText(categories.get(i).getBudget().toString() + "€");
-        holder.cProgress.setProgress(categories.get(i).getbProgress());
-        holder.progressText.setText(categories.get(i).getbProgress()+"%");
-        double spentM = ((categories.get(i).getBudget() * categories.get(i).getbProgress())/100);
+        holder.cProgress.setProgress(categories.get(i).getDepenseProgress());
+        holder.progressText.setText(categories.get(i).getDepenseProgress()+"%");
+        double spentM = ((categories.get(i).getBudget() * categories.get(i).getDepenseProgress())/100);
         holder.spentMoney.setText("-"+String.valueOf(spentM)+"€");
     }
 

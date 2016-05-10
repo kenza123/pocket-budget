@@ -2,6 +2,7 @@
     <string name="app_name">PocketBudget</string>
     <string name="dashboard">Dashboard</string>
     <string name="spendings">Dépenses</string>
+    <string name="categories">Categories</string>
     <string name="earnings">Revenus</string>
     <string name="categorySpendings">Catégorie</string>
     <string name="newCategory">Nouvelle Catégorie</string>

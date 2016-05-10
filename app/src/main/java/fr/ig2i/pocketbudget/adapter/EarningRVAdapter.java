@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,12 +27,12 @@ import fr.ig2i.pocketbudget.model.Earning;
 public class EarningRVAdapter extends RecyclerView.Adapter<EarningRVAdapter.EarningViewHolder> {
     List<Earning> earnings;
     private Context context;
-    GlobalState gs;
+    private GlobalState gs;
+    String TAG = "EarningRVAdapter";
 
-    public EarningRVAdapter(List<Earning> earnings, GlobalState gs, Context context) {
-        this.earnings = earnings;
+    public EarningRVAdapter(GlobalState gs) {
+        this.earnings = gs.getEarningService().getAllEarningsOfTheMonth();
         this.gs = gs;
-        this.context = context;
     }
 
     public class EarningViewHolder extends RecyclerView.ViewHolder {
@@ -82,6 +83,7 @@ public class EarningRVAdapter extends RecyclerView.Adapter<EarningRVAdapter.Earn
     @Override
     public EarningViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.earning_item, parent, false);
+        this.context = parent.getContext();
         EarningViewHolder evh = new EarningViewHolder(v);
         return evh;
     }
@@ -101,6 +103,6 @@ public class EarningRVAdapter extends RecyclerView.Adapter<EarningRVAdapter.Earn
 
     @Override
     public int getItemCount() {
-        return earnings.size();
+        return this.earnings.size();
     }
 }

@@ -3,6 +3,8 @@ package fr.ig2i.pocketbudget.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Date;
+
 /**
  * Created by kenzakhamaily on 24/03/2016.
  */
@@ -11,24 +13,12 @@ public class Category implements Parcelable{
     private String label;
     private Double budget;
     private Double warningThreshold;
+    private Date createdAt;
+    private Date deletedOn;
 
-    int bProgress;
-    //int pictureId;
+    private int depenseProgress;
 
     public Category() {
-    }
-
-    public Category(String label, Double budget, Double warningTreshold) {
-        this.label = label;
-        this.budget = budget;
-        this.warningThreshold = warningTreshold;
-    }
-
-    public Category(String label, Double budget, Double warningTreshold, int bProgress) {
-        this.label = label;
-        this.budget = budget;
-        this.warningThreshold = warningTreshold;
-        this.bProgress = bProgress;
     }
 
     private Category(Parcel in) {
@@ -54,8 +44,16 @@ public class Category implements Parcelable{
         return warningThreshold;
     }
 
-    public int getbProgress() {
-        return bProgress;
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public Date getDeletedOn() {
+        return deletedOn;
+    }
+
+    public int getDepenseProgress() {
+        return 50;
     }
 
     public void setId(int id) {
@@ -72,6 +70,18 @@ public class Category implements Parcelable{
 
     public void setWarningThreshold(Double warningThreshold) {
         this.warningThreshold = warningThreshold;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setDeletedOn(Date deletedOn) {
+        this.deletedOn = deletedOn;
+    }
+
+    public void setDepenseProgress(int depenseProgress) {
+        this.depenseProgress = depenseProgress;
     }
 
     @Override
@@ -104,6 +114,9 @@ public class Category implements Parcelable{
                 ", label='" + label + '\'' +
                 ", budget=" + budget +
                 ", warningThreshold=" + warningThreshold +
+                ", createdAt=" + createdAt +
+                ", deletedOn=" + deletedOn +
+                ", depenseProgress=" + depenseProgress +
                 '}';
     }
 }
