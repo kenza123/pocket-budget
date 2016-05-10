@@ -25,11 +25,11 @@ public class Earnings extends AppCompatActivity {
         Context context = Earnings.this;
 
         RecyclerView rv = (RecyclerView) findViewById(R.id.rv_earning);
-        rv.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         rv.setLayoutManager(llm);
+        rv.setHasFixedSize(true);
 
-        EarningRVAdapter adapter = new EarningRVAdapter(gs.getEarningService().getAllEarningsOfTheMonth(), gs, context);
+        EarningRVAdapter adapter = new EarningRVAdapter(gs);
         rv.setAdapter(adapter);
     }
 

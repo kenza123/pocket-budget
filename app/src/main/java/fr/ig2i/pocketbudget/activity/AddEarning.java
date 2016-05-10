@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -28,6 +29,7 @@ public class AddEarning extends AppCompatActivity implements View.OnClickListene
     private Button btnCreate;
 
     private Earning earningToUpdate;
+    private String TAG = "AddEarning";
 
     private DatePickerDialog datePickerDialog;
     private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.US);

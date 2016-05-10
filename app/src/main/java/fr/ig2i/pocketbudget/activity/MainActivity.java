@@ -29,22 +29,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     RelativeLayout spending;
     RelativeLayout earning;
     private GlobalState gs;
+    private String TAG;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         gs = (GlobalState) getApplication();
-        /*EarningDAO earningDAO = new  EarningDAO(getApplicationContext());
-
-        Earning earning1 = new Earning("Salaire", new Date() , 1000.0);
-        Earning earning2 = new Earning("Remboursement", new Date() , 50.0);
-        earningDAO.createEarning(earning1);
-        earningDAO.createEarning(earning2);
-        List<Earning> earnings = earningDAO.getAllEarnings();
-        for (Earning earning: earnings) {
-            Log.i("onCreate", earning.toString());
-        }*/
 
         mDrawerList = (ListView)findViewById(R.id.navList);
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
@@ -71,6 +62,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        TextView earningAmount =  (TextView) findViewById(R.id.earning_amount);
+        earningAmount.setText(Double.toString(gs.getEarningService().countSumEarningsOfTheMonth())+"€");
+    }
+
+    @Override
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.spending :
@@ -93,9 +91,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // display view for selected nav drawer item
                 //displayView(position);
-                Log.i("tag","clicked on item "+ Integer.toString(position));
                 String item = listArray[position];
-                Log.i("tag", item);
                 if (item != getTitle().toString()){
                     switch (item){//"Dashboard", "Dépenses", "Revenus", "Rapport", "Paramètres"
                         case "Dashboard":
