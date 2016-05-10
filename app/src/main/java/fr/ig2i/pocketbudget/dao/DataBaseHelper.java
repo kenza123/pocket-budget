@@ -7,6 +7,7 @@ package fr.ig2i.pocketbudget.dao;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DataBaseHelper extends SQLiteOpenHelper  {
     private static final String DATABASE_NAME = "pocketbudgetdb";
@@ -23,23 +24,27 @@ public class DataBaseHelper extends SQLiteOpenHelper  {
     public static final String CATEGORIE_BUDGET = "budget";
     public static final String CATEGORIE_WARNING_THRESHOLD = "warning_threshold";
     public static final String SPENDING_CATEGORIE_ID = "id_categ";
+    public static final String CREATED_AT_COLUMN = "created_at";
+    public static final String DELETED_ON_COLUMN = "deleted_on";
 
     public static final String CREATE_CATEGORIE_TABLE = "CREATE TABLE "
             + CATEGORIE_TABLE + "(" + ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + LABEL_COLUMN + " TEXT, " + CATEGORIE_BUDGET + " DOUBLE, "
-            + CATEGORIE_WARNING_THRESHOLD + " DOUBLE" + ")";
+            + CATEGORIE_WARNING_THRESHOLD + " DOUBLE, " + CREATED_AT_COLUMN + " String, "
+            + DELETED_ON_COLUMN + " String )";
 
-    public static final String CREATE_EARNING_TABLE = "CREATE TABLE "
-            + EARNING_TABLE + "(" + ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+
+    public static final String CREATE_SPENDING_TABLE = "CREATE TABLE "
+            + SPENDING_TABLE + "(" + ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + LABEL_COLUMN + " TEXT, " + AMOUNT_COLUMN + " DOUBLE, "
             + DATE_COLUMN + " DATE, " + SPENDING_CATEGORIE_ID + " INTEGER, "
             + "FOREIGN KEY(" + SPENDING_CATEGORIE_ID + ") REFERENCES "
             + CATEGORIE_TABLE + "(id) " + ")";
 
-    public static final String CREATE_SPENDING_TABLE = "CREATE TABLE "
-            + SPENDING_TABLE + "(" + ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+    public static final String CREATE_EARNING_TABLE = "CREATE TABLE "
+            + EARNING_TABLE + "(" + ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + LABEL_COLUMN + " TEXT, " + AMOUNT_COLUMN + " DOUBLE, "
-            + DATE_COLUMN + " DATE "+ ")";
+            + DATE_COLUMN + " DATE " + ")";
 
     private static DataBaseHelper instance;
 

@@ -109,7 +109,7 @@ public class EarningDAO extends DataBaseDAO {
 
     public Earning getEarningById(int id) {
         Cursor cursor = database.query(DataBaseHelper.EARNING_TABLE,
-                allColumns, DataBaseHelper.DATE_COLUMN + "", new String[] { String.valueOf(id)},
+                allColumns, WHERE_ID_EQUALS, new String[] { String.valueOf(id)},
                 null, null, null);
         if (cursor != null ) {
             cursor.moveToFirst();
