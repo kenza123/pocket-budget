@@ -79,14 +79,10 @@ public class CategoryRVAdapter extends RecyclerView.Adapter<CategoryRVAdapter.Ca
                 @Override
                 public void onClick(View v) {
                     int i = getPosition();
-                    String position = Integer.toString(i);
-                    Category cat = categories.get(i);
-                    String tag = "Info";
-                    Log.i(tag, "onClick event on category " + cat.getLabel() + " " + i);
+                    Category category = categories.get(i);
                     Intent versCategorySpendings = new Intent(context,CategorySpendings.class);
                     versCategorySpendings.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    //versCategorySpendings.putExtra("category_id", position);
-                    versCategorySpendings.putExtra("category_name", cat.getLabel());
+                    versCategorySpendings.putExtra("category", category);
                     context.startActivity(versCategorySpendings);
                     //Rediriger vers l'activité CategorySpendings
                     //Pouvoir passer en paramètre le nom de la catégorie et ses dépenses

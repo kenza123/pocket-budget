@@ -25,7 +25,7 @@ public class CategorySpendings extends AppCompatActivity {
             if(categoryToDisplay != null){
                 //requete pour récupérer la liste des spendings de cette categorie
                 setTitle(categoryToDisplay.getLabel());
-                //SpendingRVAdapter adapter = new SpendingRVAdapter(spendingService.getAllSpendingsOfCategory(CategoryToDisplay));
+                //SpendingRVAdapter adapter = new SpendingRVAdapter(gs.getSpendingService().getAllSpendingsOfCategory(CategoryToDisplay.getId()));
                 //...
             }
         }else{
