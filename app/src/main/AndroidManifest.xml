@@ -33,7 +33,10 @@
         <activity
             android:name=".activity.AddEarning"
             android:label="@string/newEarning" />
-        <activity android:name=".activity.AddSpending"></activity>
+        <activity
+            android:name=".activity.AddSpending"
+            android:label="@string/newSpending"
+            />
     </application>
 
 </manifest>

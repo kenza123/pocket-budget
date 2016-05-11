@@ -91,6 +91,7 @@ public class AddSpending extends AppCompatActivity implements View.OnClickListen
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 
         if (spendingToUpdate != null) {
+            setTitle("Modifier Dépense");
             edtLabel.setText(spendingToUpdate.getLabel());
             edtAmount.setText(Double.toString(spendingToUpdate.getAmount()));
             edtDate.setText(dateFormatter.format(spendingToUpdate.getDate()));

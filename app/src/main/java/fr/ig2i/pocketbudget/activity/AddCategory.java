@@ -40,6 +40,7 @@ public class AddCategory extends AppCompatActivity implements View.OnClickListen
         btnCreate.setOnClickListener(this);
 
         if (categoryToUpdate != null) {
+            setTitle("Modifier Catégorie");
             edtLabel.setText(categoryToUpdate.getLabel());
             edtBudget.setText(Double.toString(categoryToUpdate.getBudget()));
             edtTreshold.setText(Double.toString(categoryToUpdate.getWarningThreshold()));
@@ -78,7 +79,8 @@ public class AddCategory extends AppCompatActivity implements View.OnClickListen
     private boolean valideFields(){
         return notNull(edtLabel.getText().toString()) && notNull(edtBudget.getText().toString())
                 && notNull(edtTreshold.getText().toString()) && Double.parseDouble(edtBudget.getText().toString()) > 0
-                && Double.parseDouble(edtTreshold.getText().toString()) > 0;
+                && Double.parseDouble(edtTreshold.getText().toString()) > 0
+                && Double.parseDouble(edtBudget.getText().toString()) >= Double.parseDouble(edtTreshold.getText().toString());
     }
 
     private boolean notNull(String value){

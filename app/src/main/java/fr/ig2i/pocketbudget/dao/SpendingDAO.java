@@ -8,6 +8,7 @@ import android.util.Log;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -99,6 +100,40 @@ public class SpendingDAO extends DataBaseDAO {
         }
         cursor.close();
         return spendings;
+    }
+
+    public Double getTotalSpendingsOfTheMonth() {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.DAY_OF_MONTH, 1);
+
+        Cursor cursor = database.rawQuery("select sum(spending." + DataBaseHelper.AMOUNT_COLUMN +
+                ") FROM " + DataBaseHelper.SPENDING_TABLE + " spending " +
+                "INNER JOIN " + DataBaseHelper.CATEGORIE_TABLE + " category " +
+                "ON category." + DataBaseHelper.ID_COLUMN + " = spending." + DataBaseHelper.SPENDING_CATEGORIE_ID +
+                " WHERE category." + DataBaseHelper.DELETED_ON_COLUMN + " is null " +
+                "AND spending." + DataBaseHelper.DATE_COLUMN + " >= '" + formatter.format(c.getTime()) + "'",
+                null);
+
+        if (cursor != null ) {
+            cursor.moveToFirst();
+        }
+        return cursor.getDouble(0);
+    }
+
+    public Double getTotalSpendingsByCategoryID(int idCategory) {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.DAY_OF_MONTH, 1);
+
+        Cursor cursor = database.rawQuery("select sum(" + DataBaseHelper.AMOUNT_COLUMN +
+                        ") FROM " + DataBaseHelper.SPENDING_TABLE +
+                        " WHERE " + DataBaseHelper.SPENDING_CATEGORIE_ID + " = " + idCategory +
+                        " AND " + DataBaseHelper.DATE_COLUMN + " >= '" + formatter.format(c.getTime()) + "'",
+                null);
+
+        if (cursor != null ) {
+            cursor.moveToFirst();
+        }
+        return cursor.getDouble(0);
     }
 
     private Spending cursorToSpending(Cursor cursor) {

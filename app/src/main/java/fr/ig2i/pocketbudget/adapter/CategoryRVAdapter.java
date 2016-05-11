@@ -2,6 +2,8 @@ package fr.ig2i.pocketbudget.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.CardView;
 import android.util.Log;
@@ -107,12 +109,25 @@ public class CategoryRVAdapter extends RecyclerView.Adapter<CategoryRVAdapter.Ca
 
     @Override
     public void onBindViewHolder(CategoryViewHolder holder, int i) {
+        Double totalSpendings = gs.getSpendingService().getTotalSpendingsByCategoryID(categories.get(i).getId());
+        Double budget = categories.get(i).getBudget();
+        Double prog = (totalSpendings * 100) / budget;
+        int progress = (int) Math.ceil(prog);
+        Resources resources = context.getResources();
+
         holder.categName.setText(categories.get(i).getLabel());
-        holder.categBudget.setText(categories.get(i).getBudget().toString() + "€");
-        holder.cProgress.setProgress(categories.get(i).getDepenseProgress());
-        holder.progressText.setText(categories.get(i).getDepenseProgress()+"%");
-        double spentM = ((categories.get(i).getBudget() * categories.get(i).getDepenseProgress())/100);
-        holder.spentMoney.setText("-"+String.valueOf(spentM)+"€");
+        holder.categBudget.setText(budget.toString() + "€");
+        holder.spentMoney.setText("-"+String.valueOf(totalSpendings)+"€");
+        //if totalSpendings>warningTreshold!!
+        if(totalSpendings > budget){
+            holder.cProgress.setProgress(100);
+            holder.progressText.setText("100%");
+            holder.progressText.setTextColor(Color.RED);
+            //holder.cProgress.setProgressTintList(R.styleable.);
+        }else{
+            holder.cProgress.setProgress(progress);
+            holder.progressText.setText(progress+"%");
+        }
     }
 
     @Override
