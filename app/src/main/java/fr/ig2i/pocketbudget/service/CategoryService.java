@@ -53,4 +53,7 @@ public class CategoryService {
         //update the balance: reduce the spendings of this category
     }
 
+    public String[] getAllLabels() {
+        return categoryDAO.getAllLabels();
+    }
 }

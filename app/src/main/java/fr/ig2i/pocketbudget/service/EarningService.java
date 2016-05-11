@@ -54,4 +54,8 @@ public class EarningService {
         //modify the  balance file
     }
 
+    public String[] getAllLabels() {
+        return earningDAO.getAllLabels();
+    }
+
 }

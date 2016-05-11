@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -14,7 +16,7 @@ import fr.ig2i.pocketbudget.model.Category;
 public class AddCategory extends AppCompatActivity implements View.OnClickListener {
 
     private GlobalState gs;
-    EditText edtLabel;
+    AutoCompleteTextView edtLabel;
     EditText edtBudget;
     EditText edtTreshold;
     Button btnCreate;
@@ -33,9 +35,17 @@ public class AddCategory extends AppCompatActivity implements View.OnClickListen
 
         gs = (GlobalState) getApplication();
 
-        edtLabel = (EditText) findViewById(R.id.category_label_editText);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, gs.getCategoryService().getAllLabels());
+
+        edtLabel = (AutoCompleteTextView) findViewById(R.id.category_label_editText);
         edtBudget = (EditText) findViewById(R.id.category_budget_editText);
         edtTreshold = (EditText) findViewById(R.id.category_treshold_editText);
+
+        edtLabel.setAdapter(adapter);
+        edtLabel.setThreshold(2);
+
         btnCreate = (Button) findViewById(R.id.create_button);
         btnCreate.setOnClickListener(this);
 
