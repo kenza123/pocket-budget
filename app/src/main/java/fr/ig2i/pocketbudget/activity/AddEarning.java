@@ -52,9 +52,9 @@ public class AddEarning extends AppCompatActivity implements View.OnClickListene
 
         gs = (GlobalState) getApplication();
 
-        edtLabel = (EditText) findViewById(R.id.category_label_editText);
-        edtAmount = (EditText) findViewById(R.id.category_amount_editText);
-        edtDate = (EditText) findViewById(R.id.category_date_editText);
+        edtLabel = (EditText) findViewById(R.id.earning_label_editText);
+        edtAmount = (EditText) findViewById(R.id.earning_amount_editText);
+        edtDate = (EditText) findViewById(R.id.earning_date_editText);
         edtDate.setInputType(InputType.TYPE_NULL);
         btnCreate = (Button) findViewById(R.id.create_button);
 

@@ -7,7 +7,6 @@ package fr.ig2i.pocketbudget.dao;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 public class DataBaseHelper extends SQLiteOpenHelper  {
     private static final String DATABASE_NAME = "pocketbudgetdb";
