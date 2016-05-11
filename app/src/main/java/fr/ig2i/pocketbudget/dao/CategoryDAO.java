@@ -131,8 +131,6 @@ public class CategoryDAO extends DataBaseDAO {
         category.setLabel(cursor.getString(1));
         category.setBudget(cursor.getDouble(2));
         category.setWarningThreshold(cursor.getDouble(3));
-        Log.e(TAG, "curs 4" + cursor.getString(4));
-        Log.e(TAG, "curs 5" + cursor.getString(5));
         category.setCreatedAt(formatterDate(cursor.getString(4)));
         category.setDeletedOn(formatterDate(cursor.getString(5)));
 
