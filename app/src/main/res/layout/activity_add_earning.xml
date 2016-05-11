@@ -22,18 +22,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Label :"
-            android:id="@+id/cearning_label" />
+            android:id="@+id/earning_label" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/category_label_editText" />
+            android:id="@+id/earning_label_editText" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Montant :"
-            android:id="@+id/category_amount" />
+            android:id="@+id/earning_amount" />
 
         <EditText
             android:layout_width="match_parent"
@@ -41,19 +41,19 @@
             android:inputType="numberDecimal"
             android:imeOptions="actionDone"
             android:ems="10"
-            android:id="@+id/category_amount_editText" />
+            android:id="@+id/earning_amount_editText" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Date:"
-            android:id="@+id/category_date" />
+            android:id="@+id/cearning_date" />
 
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/category_date_editText" />
+            android:id="@+id/earning_date_editText" />
 
         <Button
             android:layout_width="wrap_content"

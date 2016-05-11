@@ -84,17 +84,9 @@ public class CategoryRVAdapter extends RecyclerView.Adapter<CategoryRVAdapter.Ca
                     versCategorySpendings.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     versCategorySpendings.putExtra("category", category);
                     context.startActivity(versCategorySpendings);
-                    //Rediriger vers l'activité CategorySpendings
-                    //Pouvoir passer en paramètre le nom de la catégorie et ses dépenses
-
                 }
             });
         }
-    }
-
-    public void add(Category item, int position) {
-        categories.add(position, item);
-        notifyItemInserted(position);
     }
 
     public void remove(Category item) {

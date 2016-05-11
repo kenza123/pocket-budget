@@ -46,8 +46,8 @@ public class CategoryService {
             Log.i(TAG, "The category " + category.toString() + "has been updated");
         }
     }
-
     public void deleteCategory(Category category){
+
         categoryDAO.markAsDeletedCategory(category);
         Log.i(TAG, "The category " + category.toString() + "has been deleted");
         //update the balance: reduce the spendings of this category

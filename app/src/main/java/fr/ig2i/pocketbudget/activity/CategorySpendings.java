@@ -1,5 +1,6 @@
 package fr.ig2i.pocketbudget.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,26 +26,23 @@ public class CategorySpendings extends AppCompatActivity {
         gs = (GlobalState) getApplication();
         setContentView(R.layout.activity_category_spendings);
 
-        Bundle extras = getIntent().getExtras();
-        if(extras != null){
-            categoryToDisplay = extras.getParcelable("category");
-            if(categoryToDisplay != null){
-                //requete pour récupérer la liste des spendings de cette categorie
-                setTitle(categoryToDisplay.getLabel());
-                //SpendingRVAdapter adapter = new SpendingRVAdapter(gs.getSpendingService().getAllSpendingsOfCategory(CategoryToDisplay.getId()));
-                //...
-            }
-        }else{
-            //don't no!
-        }
-
         RecyclerView rv = (RecyclerView) findViewById(R.id.rv_spending);
         rv.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         rv.setLayoutManager(llm);
 
-        SpendingRVAdapter adapter = new SpendingRVAdapter(gs);
-        rv.setAdapter(adapter);
+        Bundle extras = getIntent().getExtras();
+        if(extras != null){
+            categoryToDisplay = extras.getParcelable("category");
+            if(categoryToDisplay != null){
+                setTitle(categoryToDisplay.getLabel());
+                SpendingRVAdapter adapter = new SpendingRVAdapter(gs, categoryToDisplay);
+                rv.setAdapter(adapter);
+            }
+        }else{
+            //don't no!
+        }
+
     }
 
     @Override
@@ -57,7 +55,11 @@ public class CategorySpendings extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
 
-            case R.id.add : break;
+            case R.id.add :
+                Intent versAddSpending = new Intent(this, AddSpending.class);
+                versAddSpending.putExtra("category", categoryToDisplay);
+                startActivity(versAddSpending);
+                break;
             case R.id.edit :
                 //Intent versPref = new Intent(this,PrefActivity.class);
                 //startActivity(versPref);
