@@ -92,6 +92,7 @@ public class AddEarning extends AppCompatActivity implements View.OnClickListene
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 
         if (earningToUpdate != null) {
+            setTitle("Modifier Revenu");
             edtLabel.setText(earningToUpdate.getLabel());
             edtAmount.setText(Double.toString(earningToUpdate.getAmount()));
             edtDate.setText(dateFormatter.format(earningToUpdate.getDate()));

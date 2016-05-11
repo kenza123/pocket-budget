@@ -159,7 +159,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/balance_amount1"
+                        android:id="@+id/spending_amount"
                         android:layout_below="@+id/spending_text"
                         android:layout_marginLeft="15dp"
                         android:layout_marginTop="5dp"

@@ -88,9 +88,6 @@ public class CategoryDAO extends DataBaseDAO {
     }
 
     public Double countTheTotalBudget() {
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.DAY_OF_MONTH, 1);
-
         Cursor cursor = database.rawQuery("select sum(" + DataBaseHelper.CATEGORIE_BUDGET +
                 ") from " + DataBaseHelper.CATEGORIE_TABLE +
                 " where " + DataBaseHelper.DELETED_ON_COLUMN + " is null ", null);

@@ -16,6 +16,8 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import fr.ig2i.pocketbudget.GlobalState;
 import fr.ig2i.pocketbudget.R;
 
@@ -52,10 +54,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         earning = (RelativeLayout) findViewById(R.id.earning);
 
         TextView earningAmount =  (TextView) findViewById(R.id.earning_amount);
-        earningAmount.setText(Double.toString(gs.getEarningService().countSumEarningsOfTheMonth())+"€");
+        earningAmount.setText(Double.toString(gs.getEarningService().countSumEarningsOfTheMonth()) + "€");
 
         TextView budgetAmount =  (TextView) findViewById(R.id.budget_amount);
-        budgetAmount.setText(Double.toString(gs.getCategoryService().countTheTotalBudget())+"€");
+        budgetAmount.setText(Double.toString(gs.getCategoryService().countTheTotalBudget()) + "€");
+
+        TextView spendingAmout = (TextView) findViewById(R.id.spending_amount);
+        spendingAmout.setText(Double.toString(gs.getSpendingService().countTotalSpendingsOfTheMonth()) + "€");
 
         earning.setOnClickListener(this);
     }
@@ -69,10 +74,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onRestart() {
         super.onRestart();
         TextView earningAmount =  (TextView) findViewById(R.id.earning_amount);
-        earningAmount.setText(Double.toString(gs.getEarningService().countSumEarningsOfTheMonth())+"€");
+        earningAmount.setText(Double.toString(gs.getEarningService().countSumEarningsOfTheMonth()) + "€");
 
         TextView budgetAmount =  (TextView) findViewById(R.id.budget_amount);
         budgetAmount.setText(Double.toString(gs.getCategoryService().countTheTotalBudget()) + "€");
+
+        TextView spendingAmout = (TextView) findViewById(R.id.spending_amount);
+        spendingAmout.setText(Double.toString(gs.getSpendingService().countTotalSpendingsOfTheMonth()) + "€");
     }
 
     @Override

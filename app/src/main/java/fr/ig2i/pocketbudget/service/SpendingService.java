@@ -39,6 +39,14 @@ public class SpendingService {
         return spendings;
     }
 
+    public Double countTotalSpendingsOfTheMonth() {
+        return spendingDAO.getTotalSpendingsOfTheMonth();
+    }
+
+    public Double getTotalSpendingsByCategoryID(int id) {
+        return spendingDAO.getTotalSpendingsByCategoryID(id);
+    }
+
     public void addSpending(Spending spending){
         spendingDAO.createSpending(spending);
         Log.i(TAG, "The spending " + spending.toString() + "has been added");

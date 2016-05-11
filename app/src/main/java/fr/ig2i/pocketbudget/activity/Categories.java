@@ -15,6 +15,7 @@ import fr.ig2i.pocketbudget.adapter.CategoryRVAdapter;
 public class Categories extends AppCompatActivity {
 
     private GlobalState gs;
+    CategoryRVAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +28,14 @@ public class Categories extends AppCompatActivity {
         LinearLayoutManager llm = new LinearLayoutManager(this);
         rv.setLayoutManager(llm);
 
-        CategoryRVAdapter adapter = new CategoryRVAdapter(gs);
+        adapter = new CategoryRVAdapter(gs);
         rv.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        adapter.notifyDataSetChanged();
     }
 
     @Override

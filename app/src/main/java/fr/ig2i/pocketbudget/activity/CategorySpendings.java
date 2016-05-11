@@ -39,8 +39,6 @@ public class CategorySpendings extends AppCompatActivity {
                 SpendingRVAdapter adapter = new SpendingRVAdapter(gs, categoryToDisplay);
                 rv.setAdapter(adapter);
             }
-        }else{
-            //don't no!
         }
 
     }
@@ -61,10 +59,10 @@ public class CategorySpendings extends AppCompatActivity {
                 startActivity(versAddSpending);
                 break;
             case R.id.edit :
-                //Intent versPref = new Intent(this,PrefActivity.class);
-                //startActivity(versPref);
+                Intent versAddCategory = new Intent(this,AddCategory.class);
+                versAddCategory.putExtra("category", categoryToDisplay);
+                startActivity(versAddCategory);
                 break;
-            case R.id.delete : break;
         }
         return true;
     }
