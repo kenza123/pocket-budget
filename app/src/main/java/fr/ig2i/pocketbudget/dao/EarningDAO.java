@@ -109,7 +109,7 @@ public class EarningDAO extends DataBaseDAO {
 
     public Earning getEarningById(int id) {
         Cursor cursor = database.query(DataBaseHelper.EARNING_TABLE,
-                allColumns, WHERE_ID_EQUALS, new String[] { String.valueOf(id)},
+                allColumns, WHERE_ID_EQUALS, new String[]{String.valueOf(id)},
                 null, null, null);
         if (cursor != null ) {
             cursor.moveToFirst();
@@ -117,6 +117,21 @@ public class EarningDAO extends DataBaseDAO {
         Earning earning = cursorToEarning(cursor);
         cursor.close();
         return earning;
+    }
+
+    public String[] getAllLabels() {
+        List<String> labels = new ArrayList<String>();
+        Cursor cursor = database.query(DataBaseHelper.EARNING_TABLE,
+                new String[]{DataBaseHelper.LABEL_COLUMN}, null, null, DataBaseHelper.LABEL_COLUMN,
+                null, null);
+
+        while (cursor.moveToNext()) {
+            String earningLabel = cursor.getString(0);
+            labels.add(earningLabel);
+        }
+        cursor.close();
+        String[] labelsArr = new String[labels.size()];
+        return labels.toArray(labelsArr);
     }
 
     private Earning cursorToEarning(Cursor cursor){

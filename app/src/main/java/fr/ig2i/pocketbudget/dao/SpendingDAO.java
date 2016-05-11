@@ -91,7 +91,7 @@ public class SpendingDAO extends DataBaseDAO {
         String query = "select " +  allColumns + " from " + DataBaseHelper.SPENDING_TABLE + " spend, " +
                 DataBaseHelper.CATEGORIE_TABLE + " categ where spend." + DataBaseHelper.SPENDING_CATEGORIE_ID +
                 " = categ." + DataBaseHelper.ID_COLUMN + " and spend." + DataBaseHelper.SPENDING_CATEGORIE_ID +
-                " = " + id;
+                " = " + id + " ORDER BY date(spend." + DataBaseHelper.DATE_COLUMN + ")";
 
         Cursor cursor = database.rawQuery(query, null);
 
@@ -134,6 +134,21 @@ public class SpendingDAO extends DataBaseDAO {
             cursor.moveToFirst();
         }
         return cursor.getDouble(0);
+    }
+
+    public String[] getAllLabels() {
+        List<String> labels = new ArrayList<String>();
+        Cursor cursor = database.query(DataBaseHelper.SPENDING_TABLE,
+                new String[]{DataBaseHelper.LABEL_COLUMN}, null, null, DataBaseHelper.LABEL_COLUMN,
+                null, null);
+
+        while (cursor.moveToNext()) {
+            String Label = cursor.getString(0);
+            labels.add(Label);
+        }
+        cursor.close();
+        String[] labelsArr = new String[labels.size()];
+        return labels.toArray(labelsArr);
     }
 
     private Spending cursorToSpending(Cursor cursor) {

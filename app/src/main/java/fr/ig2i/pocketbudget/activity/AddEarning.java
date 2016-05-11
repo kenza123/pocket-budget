@@ -12,6 +12,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -29,7 +31,7 @@ import fr.ig2i.pocketbudget.model.Earning;
 public class AddEarning extends AppCompatActivity implements View.OnClickListener {
 
     private GlobalState gs;
-    private EditText edtLabel;
+    private AutoCompleteTextView edtLabel;
     private EditText edtAmount;
     private EditText edtDate;
     private Button btnCreate;
@@ -52,9 +54,16 @@ public class AddEarning extends AppCompatActivity implements View.OnClickListene
 
         gs = (GlobalState) getApplication();
 
-        edtLabel = (EditText) findViewById(R.id.earning_label_editText);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, gs.getEarningService().getAllLabels());
+
+        edtLabel = (AutoCompleteTextView) findViewById(R.id.earning_label_editText);
         edtAmount = (EditText) findViewById(R.id.earning_amount_editText);
         edtDate = (EditText) findViewById(R.id.earning_date_editText);
+
+        edtLabel.setAdapter(adapter);
+        edtLabel.setThreshold(2);
+
         edtDate.setInputType(InputType.TYPE_NULL);
         btnCreate = (Button) findViewById(R.id.create_button);
 
@@ -99,7 +108,6 @@ public class AddEarning extends AppCompatActivity implements View.OnClickListene
             btnCreate.setText("Modifier");
         }
     }
-
 
     @Override
     public void onClick(View v) {

@@ -63,4 +63,8 @@ public class SpendingService {
             Log.i(TAG, "The spending " + spending.toString() + "has been updated");
         }
     }
+
+    public String[] getAllLabels() {
+        return spendingDAO.getAllLabels();
+    }
 }

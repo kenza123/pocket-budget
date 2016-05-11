@@ -9,6 +9,8 @@ import android.support.v7.widget.CardView;
 import android.text.InputType;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -25,7 +27,7 @@ import fr.ig2i.pocketbudget.model.Spending;
 
 public class AddSpending extends AppCompatActivity implements View.OnClickListener  {
     private GlobalState gs;
-    private EditText edtLabel;
+    private AutoCompleteTextView edtLabel;
     private EditText edtAmount;
     private EditText edtDate;
     private Button btnCreate;
@@ -50,10 +52,18 @@ public class AddSpending extends AppCompatActivity implements View.OnClickListen
 
         gs = (GlobalState) getApplication();
 
-        edtLabel = (EditText) findViewById(R.id.spending_label_editText);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, gs.getSpendingService().getAllLabels());
+
+        edtLabel = (AutoCompleteTextView) findViewById(R.id.spending_label_editText);
         edtAmount = (EditText) findViewById(R.id.spending_amount_editText);
         edtDate = (EditText) findViewById(R.id.spending_date_editText);
         edtDate.setInputType(InputType.TYPE_NULL);
+
+        edtLabel.setAdapter(adapter);
+        edtLabel.setThreshold(2);
+
         btnCreate = (Button) findViewById(R.id.create_button);
 
         edtAmount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
