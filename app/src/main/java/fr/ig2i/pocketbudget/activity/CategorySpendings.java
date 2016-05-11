@@ -18,6 +18,7 @@ public class CategorySpendings extends AppCompatActivity {
 
     private GlobalState gs;
     
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
