@@ -29,9 +29,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
     private String[] listArray = { "Dashboard", "Dépenses", "Revenus", "Rapport", "Paramètres"};
-    RelativeLayout spending;
-    RelativeLayout earning;
-    ImageView addButton;
+    private RelativeLayout spending;
+    private RelativeLayout earning;
+    private ImageView addButton;
     private GlobalState gs;
     private String TAG;
 

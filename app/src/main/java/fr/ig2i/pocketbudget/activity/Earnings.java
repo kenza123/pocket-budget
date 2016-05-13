@@ -8,14 +8,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
 import fr.ig2i.pocketbudget.GlobalState;
 import fr.ig2i.pocketbudget.R;
 import fr.ig2i.pocketbudget.adapter.EarningRVAdapter;
 
-public class Earnings extends AppCompatActivity {
+public class Earnings extends AppCompatActivity implements View.OnClickListener {
 
     private GlobalState gs;
+    private ImageView addButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +26,9 @@ public class Earnings extends AppCompatActivity {
         gs = (GlobalState) getApplication();
         setContentView(R.layout.activity_earnings);
         Context context = Earnings.this;
+
+        addButton = (ImageView) findViewById(R.id.add_button);
+        addButton.setOnClickListener(this);
 
         RecyclerView rv = (RecyclerView) findViewById(R.id.rv_earning);
         LinearLayoutManager llm = new LinearLayoutManager(this);
@@ -46,5 +52,15 @@ public class Earnings extends AppCompatActivity {
             startActivity(versAddEarning);
         }
         return true;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()) {
+            case R.id.add_button:
+                Intent versAddEarning = new Intent(this,AddEarning.class);
+                startActivity(versAddEarning);
+                break;
+        }
     }
 }
