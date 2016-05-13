@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String[] listArray = { "Dashboard", "Dépenses", "Revenus", "Rapport", "Paramètres"};
     RelativeLayout spending;
     RelativeLayout earning;
+    ImageView addButton;
     private GlobalState gs;
     private String TAG;
 
@@ -52,6 +54,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         spending = (RelativeLayout) findViewById(R.id.spending);
         spending.setOnClickListener(this);
         earning = (RelativeLayout) findViewById(R.id.earning);
+        earning.setOnClickListener(this);
+        addButton = (ImageView) findViewById(R.id.add_button);
+        addButton.setOnClickListener(this);
 
         TextView earningAmount =  (TextView) findViewById(R.id.earning_amount);
         earningAmount.setText(Double.toString(gs.getEarningService().countSumEarningsOfTheMonth()) + "€");
@@ -61,8 +66,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         TextView spendingAmout = (TextView) findViewById(R.id.spending_amount);
         spendingAmout.setText(Double.toString(gs.getSpendingService().countTotalSpendingsOfTheMonth()) + "€");
-
-        earning.setOnClickListener(this);
     }
 
     @Override
@@ -93,6 +96,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.earning:
                 Intent versEarnings = new Intent(this,Earnings.class);
                 startActivity(versEarnings);
+                break;
+            case R.id.add_button:
+                Intent versAddItem = new Intent(this,AddItem.class);
+                startActivity(versAddItem);
                 break;
         }
     }
