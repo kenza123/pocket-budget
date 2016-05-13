@@ -1,8 +1,10 @@
 package fr.ig2i.pocketbudget.activity;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -20,6 +22,10 @@ public class AddCategory extends AppCompatActivity implements View.OnClickListen
     EditText edtBudget;
     EditText edtTreshold;
     Button btnCreate;
+    private String intentFromActivity;
+    //private String previousActivity;
+    private String TAG = "AddCategory";
+
 
     private Category categoryToUpdate;
 
@@ -28,9 +34,12 @@ public class AddCategory extends AppCompatActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_category);
 
+        //previousActivity = getCallingActivity().getClassName();
+        //Log.i(TAG, "the previous activity name was  = " + previousActivity);
         Bundle extras = getIntent().getExtras();
         if(extras != null) {
             categoryToUpdate = extras.getParcelable("category");
+            intentFromActivity = (String) extras.get("intentFromActivity");
         }
 
         gs = (GlobalState) getApplication();
@@ -76,11 +85,17 @@ public class AddCategory extends AppCompatActivity implements View.OnClickListen
 
                 gs.getCategoryService().addCategory(category);
             }
-
-            Intent versCategories = new Intent(this,Categories.class);
-            versCategories.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(versCategories);
-            finish();
+            if(intentFromActivity != null) {
+                Intent versAddItem = new Intent(this,AddItem.class);
+                versAddItem.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(versAddItem);
+                finish();
+            } else {
+                Intent versCategories = new Intent(this,Categories.class);
+                versCategories.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(versCategories);
+                finish();
+            }
         } else {
         gs.alerter("Données invalides");
         }

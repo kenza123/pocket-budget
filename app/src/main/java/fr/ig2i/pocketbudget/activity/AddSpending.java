@@ -143,6 +143,8 @@ public class AddSpending extends AppCompatActivity implements View.OnClickListen
                 versCategorySpendings.putExtra("category", spendingCategory);
                 startActivity(versCategorySpendings);
                 finish();
+            } else {
+                gs.alerter("Données invalides");
             }
         } else if(v == edtDate) {
             datePickerDialog.show();

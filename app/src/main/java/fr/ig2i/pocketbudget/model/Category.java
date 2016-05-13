@@ -21,6 +21,10 @@ public class Category implements Parcelable{
     public Category() {
     }
 
+    public Category(String label) {
+        this.label = label;
+    }
+
     private Category(Parcel in) {
         id = in.readInt();
         label = in.readString();
@@ -109,14 +113,6 @@ public class Category implements Parcelable{
 
     @Override
     public String toString() {
-        return "Category{" +
-                "id=" + id +
-                ", label='" + label + '\'' +
-                ", budget=" + budget +
-                ", warningThreshold=" + warningThreshold +
-                ", createdAt=" + createdAt +
-                ", deletedOn=" + deletedOn +
-                ", depenseProgress=" + depenseProgress +
-                '}';
+        return this.getLabel();
     }
 }

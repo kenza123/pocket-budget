@@ -31,6 +31,21 @@ public class CategoryService {
         return categories;
     }
 
+    public List<Category> getAllNotDeletedCategoriesOrdered(){
+        List<Category> categories = categoryDAO.getAllNotDeletedCategoriesOrdered();
+        Log.i(TAG, " Show the categories");
+        for(Category category : categories) {
+            Log.i(TAG, category.toString());
+        }
+        return categories;
+    }
+
+    public Category getCategoryByLabel(String categoryName){
+        //get category that has this label and that is not marked as deleted
+        //what if two categories have the same name and are not deleted??
+        return new Category();
+    }
+
     public double countTheTotalBudget(){
         return categoryDAO.countTheTotalBudget();
     }
