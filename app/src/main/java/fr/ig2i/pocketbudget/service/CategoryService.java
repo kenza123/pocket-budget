@@ -40,12 +40,6 @@ public class CategoryService {
         return categories;
     }
 
-    public Category getCategoryByLabel(String categoryName){
-        //get category that has this label and that is not marked as deleted
-        //what if two categories have the same name and are not deleted??
-        return new Category();
-    }
-
     public double countTheTotalBudget(){
         return categoryDAO.countTheTotalBudget();
     }
@@ -66,9 +60,5 @@ public class CategoryService {
         categoryDAO.markAsDeletedCategory(category);
         Log.i(TAG, "The category " + category.toString() + "has been deleted");
         //update the balance: reduce the spendings of this category
-    }
-
-    public String[] getAllLabels() {
-        return categoryDAO.getAllLabels();
     }
 }

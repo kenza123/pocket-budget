@@ -18,12 +18,11 @@ import fr.ig2i.pocketbudget.model.Category;
 public class AddCategory extends AppCompatActivity implements View.OnClickListener {
 
     private GlobalState gs;
-    AutoCompleteTextView edtLabel;
+    EditText edtLabel;
     EditText edtBudget;
     EditText edtTreshold;
     Button btnCreate;
     private String intentFromActivity;
-    //private String previousActivity;
     private String TAG = "AddCategory";
 
 
@@ -34,8 +33,6 @@ public class AddCategory extends AppCompatActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_category);
 
-        //previousActivity = getCallingActivity().getClassName();
-        //Log.i(TAG, "the previous activity name was  = " + previousActivity);
         Bundle extras = getIntent().getExtras();
         if(extras != null) {
             categoryToUpdate = extras.getParcelable("category");
@@ -44,16 +41,9 @@ public class AddCategory extends AppCompatActivity implements View.OnClickListen
 
         gs = (GlobalState) getApplication();
 
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, gs.getCategoryService().getAllLabels());
-
-        edtLabel = (AutoCompleteTextView) findViewById(R.id.category_label_editText);
+        edtLabel = (EditText) findViewById(R.id.category_label_editText);
         edtBudget = (EditText) findViewById(R.id.category_budget_editText);
         edtTreshold = (EditText) findViewById(R.id.category_treshold_editText);
-
-        edtLabel.setAdapter(adapter);
-        edtLabel.setThreshold(2);
 
         btnCreate = (Button) findViewById(R.id.create_button);
         btnCreate.setOnClickListener(this);

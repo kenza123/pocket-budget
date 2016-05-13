@@ -135,21 +135,6 @@ public class CategoryDAO extends DataBaseDAO {
         return earning;
     }
 
-    public String[] getAllLabels() {
-        List<String> labels = new ArrayList<String>();
-        Cursor cursor = database.query(DataBaseHelper.CATEGORIE_TABLE,
-                new String[]{DataBaseHelper.LABEL_COLUMN}, null, null, DataBaseHelper.LABEL_COLUMN,
-                null, null);
-
-        while (cursor.moveToNext()) {
-            String Label = cursor.getString(0);
-            labels.add(Label);
-        }
-        cursor.close();
-        String[] labelsArr = new String[labels.size()];
-        return labels.toArray(labelsArr);
-    }
-
     private Category cursorToCategory(Cursor cursor){
         Category category = new Category();
         category.setId(cursor.getInt(0));
