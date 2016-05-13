@@ -7,6 +7,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
 import fr.ig2i.pocketbudget.GlobalState;
 import fr.ig2i.pocketbudget.R;
@@ -14,10 +16,11 @@ import fr.ig2i.pocketbudget.adapter.SpendingRVAdapter;
 import fr.ig2i.pocketbudget.model.Category;
 import fr.ig2i.pocketbudget.service.SpendingService;
 
-public class CategorySpendings extends AppCompatActivity {
+public class CategorySpendings extends AppCompatActivity implements View.OnClickListener {
     private Category categoryToDisplay;
 
     private GlobalState gs;
+    private ImageView addButton;
     
 
     @Override
@@ -25,6 +28,9 @@ public class CategorySpendings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         gs = (GlobalState) getApplication();
         setContentView(R.layout.activity_category_spendings);
+
+        addButton = (ImageView) findViewById(R.id.add_button);
+        addButton.setOnClickListener(this);
 
         RecyclerView rv = (RecyclerView) findViewById(R.id.rv_spending);
         rv.setHasFixedSize(true);
@@ -52,7 +58,6 @@ public class CategorySpendings extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
-
             case R.id.add :
                 Intent versAddSpending = new Intent(this, AddSpending.class);
                 versAddSpending.putExtra("category", categoryToDisplay);
@@ -65,5 +70,16 @@ public class CategorySpendings extends AppCompatActivity {
                 break;
         }
         return true;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()) {
+            case R.id.add_button:
+                Intent versAddSpending = new Intent(this, AddSpending.class);
+                versAddSpending.putExtra("category", categoryToDisplay);
+                startActivity(versAddSpending);
+                break;
+        }
     }
 }
