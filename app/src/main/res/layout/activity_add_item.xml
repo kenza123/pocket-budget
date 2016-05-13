@@ -7,51 +7,71 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="fr.ig2i.pocketbudget.activity.AddCategory">
+    tools:context="fr.ig2i.pocketbudget.activity.AddItem">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:clickable="true"
+        android:focusableInTouchMode="true" >
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dépense"
+            android:id="@+id/item_switch"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Catégorie :"
+            android:id="@+id/item_category" />
+
+        <Spinner
+            android:id="@+id/item_category_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Label :"
-            android:id="@+id/category_label" />
+            android:id="@+id/item_label" />
 
-        <EditText
+        <AutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/category_label_editText" />
+            android:id="@+id/item_label_editText" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Budget :"
-            android:id="@+id/category_budget" />
+            android:text="Montant :"
+            android:id="@+id/item_amount" />
 
-        <EditText
+        <AutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
+            android:inputType="numberDecimal"
+            android:imeOptions="actionDone"
             android:ems="10"
-            android:id="@+id/category_budget_editText" />
+            android:id="@+id/item_amount_editText" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Seuil :"
-            android:id="@+id/category_treshold" />
+            android:text="Date:"
+            android:id="@+id/item_date" />
+
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/category_treshold_editText" />
+            android:id="@+id/item_date_editText" />
 
         <Button
             android:layout_width="wrap_content"
@@ -59,5 +79,7 @@
             android:text="Créer"
             android:id="@+id/create_button"
             android:layout_gravity="center_horizontal" />
+
     </LinearLayout>
+
 </RelativeLayout>

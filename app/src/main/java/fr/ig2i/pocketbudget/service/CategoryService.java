@@ -31,6 +31,15 @@ public class CategoryService {
         return categories;
     }
 
+    public List<Category> getAllNotDeletedCategoriesOrdered(){
+        List<Category> categories = categoryDAO.getAllNotDeletedCategoriesOrdered();
+        Log.i(TAG, " Show the categories");
+        for(Category category : categories) {
+            Log.i(TAG, category.toString());
+        }
+        return categories;
+    }
+
     public double countTheTotalBudget(){
         return categoryDAO.countTheTotalBudget();
     }
@@ -51,9 +60,5 @@ public class CategoryService {
         categoryDAO.markAsDeletedCategory(category);
         Log.i(TAG, "The category " + category.toString() + "has been deleted");
         //update the balance: reduce the spendings of this category
-    }
-
-    public String[] getAllLabels() {
-        return categoryDAO.getAllLabels();
     }
 }

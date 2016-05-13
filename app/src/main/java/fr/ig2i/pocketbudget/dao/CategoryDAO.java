@@ -51,6 +51,19 @@ public class CategoryDAO extends DataBaseDAO {
         return categories;
     }
 
+    public List<Category> getAllNotDeletedCategoriesOrdered() {
+        List<Category> categories = new ArrayList<Category>();
+        Cursor cursor = database.rawQuery("select * from " + DataBaseHelper.CATEGORIE_TABLE +
+                " where " + DataBaseHelper.DELETED_ON_COLUMN + " is null ORDER BY " +
+                DataBaseHelper.LABEL_COLUMN, null);
+
+        while (cursor.moveToNext()) {
+            categories.add(cursorToCategory(cursor));
+        }
+        cursor.close();
+        return categories;
+    }
+
     public long createCategory(Category category) {
         ContentValues values = new ContentValues();
         values.put(DataBaseHelper.LABEL_COLUMN, category.getLabel());
@@ -120,21 +133,6 @@ public class CategoryDAO extends DataBaseDAO {
         Category earning = cursorToCategory(cursor);
         cursor.close();
         return earning;
-    }
-
-    public String[] getAllLabels() {
-        List<String> labels = new ArrayList<String>();
-        Cursor cursor = database.query(DataBaseHelper.CATEGORIE_TABLE,
-                new String[]{DataBaseHelper.LABEL_COLUMN}, null, null, DataBaseHelper.LABEL_COLUMN,
-                null, null);
-
-        while (cursor.moveToNext()) {
-            String Label = cursor.getString(0);
-            labels.add(Label);
-        }
-        cursor.close();
-        String[] labelsArr = new String[labels.size()];
-        return labels.toArray(labelsArr);
     }
 
     private Category cursorToCategory(Cursor cursor){

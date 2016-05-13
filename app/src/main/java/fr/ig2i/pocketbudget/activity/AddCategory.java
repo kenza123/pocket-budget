@@ -1,8 +1,10 @@
 package fr.ig2i.pocketbudget.activity;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -16,10 +18,13 @@ import fr.ig2i.pocketbudget.model.Category;
 public class AddCategory extends AppCompatActivity implements View.OnClickListener {
 
     private GlobalState gs;
-    AutoCompleteTextView edtLabel;
+    EditText edtLabel;
     EditText edtBudget;
     EditText edtTreshold;
     Button btnCreate;
+    private String intentFromActivity;
+    private String TAG = "AddCategory";
+
 
     private Category categoryToUpdate;
 
@@ -31,20 +36,14 @@ public class AddCategory extends AppCompatActivity implements View.OnClickListen
         Bundle extras = getIntent().getExtras();
         if(extras != null) {
             categoryToUpdate = extras.getParcelable("category");
+            intentFromActivity = (String) extras.get("intentFromActivity");
         }
 
         gs = (GlobalState) getApplication();
 
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, gs.getCategoryService().getAllLabels());
-
-        edtLabel = (AutoCompleteTextView) findViewById(R.id.category_label_editText);
+        edtLabel = (EditText) findViewById(R.id.category_label_editText);
         edtBudget = (EditText) findViewById(R.id.category_budget_editText);
         edtTreshold = (EditText) findViewById(R.id.category_treshold_editText);
-
-        edtLabel.setAdapter(adapter);
-        edtLabel.setThreshold(2);
 
         btnCreate = (Button) findViewById(R.id.create_button);
         btnCreate.setOnClickListener(this);
@@ -76,11 +75,17 @@ public class AddCategory extends AppCompatActivity implements View.OnClickListen
 
                 gs.getCategoryService().addCategory(category);
             }
-
-            Intent versCategories = new Intent(this,Categories.class);
-            versCategories.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(versCategories);
-            finish();
+            if(intentFromActivity != null) {
+                Intent versAddItem = new Intent(this,AddItem.class);
+                versAddItem.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(versAddItem);
+                finish();
+            } else {
+                Intent versCategories = new Intent(this,Categories.class);
+                versCategories.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(versCategories);
+                finish();
+            }
         } else {
         gs.alerter("Données invalides");
         }
