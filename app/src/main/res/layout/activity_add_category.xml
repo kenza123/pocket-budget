@@ -53,6 +53,13 @@
             android:ems="10"
             android:id="@+id/category_treshold_editText" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="*Le seuil est la valeur à partir de laquelle vous souhaitez recevoir une alerte"
+            android:id="@+id/category_help"
+            android:textSize="12dp" />
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
