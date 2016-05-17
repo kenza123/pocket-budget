@@ -2,8 +2,10 @@ package fr.ig2i.pocketbudget.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.CardView;
 import android.util.Log;
@@ -31,6 +33,7 @@ public class CategoryRVAdapter extends RecyclerView.Adapter<CategoryRVAdapter.Ca
     GlobalState gs;
     private List<Category> categories;
     private Context context;
+    private String TAG = "CategoryAdapter";
 
     public CategoryRVAdapter(GlobalState gs) {
         this.gs = gs;
@@ -111,23 +114,36 @@ public class CategoryRVAdapter extends RecyclerView.Adapter<CategoryRVAdapter.Ca
     public void onBindViewHolder(CategoryViewHolder holder, int i) {
         Double totalSpendings = gs.getSpendingService().getTotalSpendingsByCategoryID(categories.get(i).getId());
         Double budget = categories.get(i).getBudget();
+        Double warningTreshold = categories.get(i).getWarningThreshold();
         Double prog = (totalSpendings * 100) / budget;
         int progress = (int) Math.ceil(prog);
         Resources resources = context.getResources();
+        Drawable drawable;
 
         holder.categName.setText(categories.get(i).getLabel());
         holder.categBudget.setText(budget.toString() + "€");
-        holder.spentMoney.setText("-"+String.valueOf(totalSpendings)+"€");
-        //if totalSpendings>warningTreshold!!
+        holder.spentMoney.setText("-" + String.valueOf(totalSpendings) + "€");
+
         if(totalSpendings > budget){
+            Log.i(TAG, "totalSpendings > budget");
             holder.cProgress.setProgress(100);
-            holder.progressText.setText("100%");
-            holder.progressText.setTextColor(Color.RED);
-            //holder.cProgress.setProgressTintList(R.styleable.);
-        }else{
+            holder.progressText.setText("+100%");
+            holder.progressText.setTextColor(Color.parseColor("#D70000"));
+            drawable = resources.getDrawable(R.drawable.progress_alert);
+        } else if(totalSpendings >= warningTreshold) {
+            Log.i(TAG, "totalSpendings >= warningTreshold");
             holder.cProgress.setProgress(progress);
-            holder.progressText.setText(progress+"%");
+            holder.progressText.setText(progress + "%");
+            holder.progressText.setTextColor(Color.parseColor("#FF8F00"));
+            drawable = resources.getDrawable(R.drawable.progress_warning);
+        } else {
+            Log.i(TAG, "Normal");
+            holder.cProgress.setProgress(progress);
+            holder.progressText.setText(progress + "%");
+            holder.progressText.setTextColor(Color.parseColor("#919191"));
+            drawable = resources.getDrawable(R.drawable.progress);
         }
+        holder.cProgress.setProgressDrawable(drawable);
     }
 
     @Override
