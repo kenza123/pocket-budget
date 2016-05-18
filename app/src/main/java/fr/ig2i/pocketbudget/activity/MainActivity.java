@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView addButton;
     private PieChart pieChart;
     private RelativeLayout chartLayout;
+    private Boolean availableData;
     private GlobalState gs;
     private String TAG;
     private ArrayList<Float> yData = new ArrayList<Float>();
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         gs = (GlobalState) getApplication();
-        initiateChartData();
+        availableData = initiateChartData();
 
         mDrawerList = (ListView) findViewById(R.id.navList);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -82,21 +83,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         addButton.setOnClickListener(this);
 
         chartLayout = (RelativeLayout) findViewById(R.id.chart_layout);
-        pieChart = new PieChart(this);
+        pieChart = (PieChart) findViewById(R.id.pie_chart);
+        //pieChart = new PieChart(this);
+
+
 
         // add pie chart to main layout
-        chartLayout.addView(pieChart);
+        //chartLayout.addView(pieChart);
 
         // configure pie chart
         pieChart.setUsePercentValues(true);
-        pieChart.setDescription("Consommation par catégorie");
+        pieChart.setDescription("");
+        //pieChart.setMinimumWidth(chartLayout.getWidth());
 
         // enable hole and configure
         pieChart.setDrawHoleEnabled(true);
-        //pieChart.setHoleColorTransparent(true);
         pieChart.setHoleColor(0);
-        pieChart.setHoleRadius(7);
-        pieChart.setTransparentCircleRadius(10);
+        pieChart.setHoleRadius(20);
+        pieChart.setTransparentCircleRadius(25);
 
         // enable rotation of the chart by touch
         pieChart.setRotationAngle(0);
@@ -121,7 +125,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         // add data
-        addDataToChart();
+        if (availableData) {
+            addDataToChart();
+        }
 
         // customize legends
         Legend l = pieChart.getLegend();
@@ -150,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        SharedPreferences prefs = gs.getPrefs();
         boolean previouslyStarted = prefs.getBoolean(getString(R.string.pref_previously_started), false);
         if (!previouslyStarted) {
             SharedPreferences.Editor edit = prefs.edit();
@@ -164,6 +170,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onRestart() {
         super.onRestart();
+
+        availableData = initiateChartData();
+        if (availableData) {
+            addDataToChart();
+        }
+
         TextView balanceAmount =  (TextView) findViewById(R.id.balance_amount);
         balanceAmount.setText(Double.toString(gs.getBalanceService().getBalanceAmount()) + "€");
 
@@ -289,16 +301,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onStop();
     }
 
-    private void initiateChartData(){
+    private boolean initiateChartData(){
         List<Category> categories = gs.getCategoryService().getAllNotDeletedCategories();
+        Double totalSpendings = gs.getSpendingService().countTotalSpendingsOfTheMonth();
+        xData.clear();
+        yData.clear();
 
-        for(Category cat : categories){
-            xData.add(cat.getLabel());
-            Double totalSpendings = gs.getSpendingService().getTotalSpendingsByCategoryID(cat.getId());
-            Double budget = cat.getBudget();
-            Double warningTreshold = cat.getWarningThreshold();
-            Double prog = (totalSpendings * 100) / budget;
-            yData.add(Float.parseFloat(Double.toString(prog)));
+        if (categories.size() > 0) {
+            for(Category cat : categories){
+                xData.add(cat.getLabel());
+                Double categorySpendings = gs.getSpendingService().getTotalSpendingsByCategoryID(cat.getId());
+                Double prog = (categorySpendings * 100) / totalSpendings;
+                yData.add(Float.parseFloat(Double.toString(prog)));
+            }
+            return true;
+        } else {
+            return false;
         }
 
     }
@@ -315,36 +333,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             xVals.add(xData.get(i));
 
         // create pie data set
-        PieDataSet dataSet = new PieDataSet(yVals1, "Conso Categ");
+        PieDataSet dataSet = new PieDataSet(yVals1, "");
         dataSet.setSliceSpace(3);
         dataSet.setSelectionShift(5);
 
         // add many colors
         ArrayList<Integer> colors = new ArrayList<Integer>();
 
-        for (int c : ColorTemplate.VORDIPLOM_COLORS)
+        for (int c : gs.getJoyfulTemplate())
             colors.add(c);
 
-        for (int c : ColorTemplate.JOYFUL_COLORS)
+        for (int c : gs.getColorfulTemplate())
             colors.add(c);
 
-        for (int c : ColorTemplate.COLORFUL_COLORS)
+        for (int c : gs.getNiceTemplate())
             colors.add(c);
 
-        for (int c : ColorTemplate.LIBERTY_COLORS)
+        for (int c : gs.getDarkTemplate())
             colors.add(c);
 
-        for (int c : ColorTemplate.PASTEL_COLORS)
+        for (int c : gs.getPaleTemplate())
             colors.add(c);
 
-        colors.add(ColorTemplate.getHoloBlue());
         dataSet.setColors(colors);
 
         // instantiate pie data object now
         PieData data = new PieData(xVals, dataSet);
         data.setValueFormatter(new PercentFormatter());
         data.setValueTextSize(11f);
-        data.setValueTextColor(Color.GRAY);
+        data.setValueTextColor(Color.WHITE);
 
         pieChart.setData(data);
 
