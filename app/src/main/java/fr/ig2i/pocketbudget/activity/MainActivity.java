@@ -3,6 +3,8 @@ package fr.ig2i.pocketbudget.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -19,10 +21,27 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
+
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import fr.ig2i.pocketbudget.GlobalState;
 import fr.ig2i.pocketbudget.R;
+import fr.ig2i.pocketbudget.model.Category;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private ListView mDrawerList;
@@ -30,25 +49,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayAdapter<String> mAdapter;
     private ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
-    private String[] listArray = { "Dashboard", "Dépenses", "Revenus", "Rapport", "Paramètres"};
+    private String[] listArray = {"Dashboard", "Dépenses", "Revenus", "Rapport", "Paramètres"};
     private RelativeLayout spending;
     private RelativeLayout earning;
     private ImageView addButton;
+    private PieChart pieChart;
+    private RelativeLayout chartLayout;
     private GlobalState gs;
     private String TAG;
+    private ArrayList<Float> yData = new ArrayList<Float>();
+    private ArrayList<String> xData = new ArrayList<String>();
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         gs = (GlobalState) getApplication();
+        initiateChartData();
 
         //if table solde is empty => then
         //Intent versWelcome = new Intent(this,Welcome.class);
         //startActivity(versWelcome);
 
-        mDrawerList = (ListView)findViewById(R.id.navList);
-        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView) findViewById(R.id.navList);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mActivityTitle = getTitle().toString();
 
         addDrawerItems();
@@ -64,19 +93,86 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         addButton = (ImageView) findViewById(R.id.add_button);
         addButton.setOnClickListener(this);
 
-        TextView earningAmount =  (TextView) findViewById(R.id.earning_amount);
+        chartLayout = (RelativeLayout) findViewById(R.id.chart_layout);
+        pieChart = new PieChart(this);
+
+        // add pie chart to main layout
+        chartLayout.addView(pieChart);
+
+        // configure pie chart
+        pieChart.setUsePercentValues(true);
+        pieChart.setDescription("Consommation par catégorie");
+
+        // enable hole and configure
+        pieChart.setDrawHoleEnabled(true);
+        //pieChart.setHoleColorTransparent(true);
+        pieChart.setHoleColor(0);
+        pieChart.setHoleRadius(7);
+        pieChart.setTransparentCircleRadius(10);
+
+        // enable rotation of the chart by touch
+        pieChart.setRotationAngle(0);
+        pieChart.setRotationEnabled(true);
+
+        // set a chart value selected listener
+        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+
+            @Override
+            public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
+                // display msg when value selected
+                if (e == null)
+                    return;
+
+                //gs.alerter(xData[e.getXIndex()] + " = " + e.getVal() + "%");
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
+
+        // add data
+        addDataToChart();
+
+        // customize legends
+        Legend l = pieChart.getLegend();
+        l.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
+        l.setXEntrySpace(7);
+        l.setYEntrySpace(5);
+
+        TextView earningAmount = (TextView) findViewById(R.id.earning_amount);
         earningAmount.setText(Double.toString(gs.getEarningService().countSumEarningsOfTheMonth()) + "€");
 
-        TextView budgetAmount =  (TextView) findViewById(R.id.budget_amount);
+        TextView budgetAmount = (TextView) findViewById(R.id.budget_amount);
         budgetAmount.setText(Double.toString(gs.getCategoryService().countTheTotalBudget()) + "€");
 
         TextView spendingAmout = (TextView) findViewById(R.id.spending_amount);
         spendingAmout.setText(Double.toString(gs.getSpendingService().countTotalSpendingsOfTheMonth()) + "€");
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://fr.ig2i.pocketbudget.activity/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
     }
 
     @Override
@@ -84,11 +180,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onResume();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         boolean previouslyStarted = prefs.getBoolean(getString(R.string.pref_previously_started), false);
-        if(!previouslyStarted) {
+        if (!previouslyStarted) {
             SharedPreferences.Editor edit = prefs.edit();
             edit.putBoolean(getString(R.string.pref_previously_started), Boolean.TRUE);
             edit.commit();
-            Intent versWelcome = new Intent(this,Welcome.class);
+            Intent versWelcome = new Intent(this, Welcome.class);
             startActivity(versWelcome);
         }
     }
@@ -96,10 +192,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onRestart() {
         super.onRestart();
-        TextView earningAmount =  (TextView) findViewById(R.id.earning_amount);
+        TextView earningAmount = (TextView) findViewById(R.id.earning_amount);
         earningAmount.setText(Double.toString(gs.getEarningService().countSumEarningsOfTheMonth()) + "€");
 
-        TextView budgetAmount =  (TextView) findViewById(R.id.budget_amount);
+        TextView budgetAmount = (TextView) findViewById(R.id.budget_amount);
         budgetAmount.setText(Double.toString(gs.getCategoryService().countTheTotalBudget()) + "€");
 
         TextView spendingAmout = (TextView) findViewById(R.id.spending_amount);
@@ -108,17 +204,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()) {
-            case R.id.spending :
-                Intent versSpendings = new Intent(this,Categories.class);
+        switch (v.getId()) {
+            case R.id.spending:
+                Intent versSpendings = new Intent(this, Categories.class);
                 startActivity(versSpendings);
                 break;
             case R.id.earning:
-                Intent versEarnings = new Intent(this,Earnings.class);
+                Intent versEarnings = new Intent(this, Earnings.class);
                 startActivity(versEarnings);
                 break;
             case R.id.add_button:
-                Intent versAddItem = new Intent(this,AddItem.class);
+                Intent versAddItem = new Intent(this, AddItem.class);
                 startActivity(versAddItem);
                 break;
         }
@@ -128,28 +224,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listArray);
         mDrawerList.setAdapter(mAdapter);
 
-        mDrawerList.setOnItemClickListener(new ListView.OnItemClickListener(){
+        mDrawerList.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // display view for selected nav drawer item
                 //displayView(position);
                 String item = listArray[position];
-                if (item != getTitle().toString()){
-                    switch (item){//"Dashboard", "Dépenses", "Revenus", "Rapport", "Paramètres"
+                if (item != getTitle().toString()) {
+                    switch (item) {//"Dashboard", "Dépenses", "Revenus", "Rapport", "Paramètres"
                         case "Dashboard":
-                            Intent versDashboard = new Intent(getApplicationContext(),MainActivity.class);
+                            Intent versDashboard = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(versDashboard);
                             break;
                         case "Dépenses":
-                            Intent versCatSpendings = new Intent(getApplicationContext(),CategorySpendings.class);
+                            Intent versCatSpendings = new Intent(getApplicationContext(), CategorySpendings.class);
                             startActivity(versCatSpendings);
                             break;
                         case "Revenus":
-                            Intent versEarnings = new Intent(getApplicationContext(),Earnings.class);
+                            Intent versEarnings = new Intent(getApplicationContext(), Earnings.class);
                             startActivity(versEarnings);
                             break;
-                        case "Rapport": break;
-                        case "Paramètres": break;
+                        case "Rapport":
+                            break;
+                        case "Paramètres":
+                            break;
                     }
                 }
 
@@ -217,5 +315,91 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://fr.ig2i.pocketbudget.activity/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
+    }
+
+    private void initiateChartData(){
+        List<Category> categories = gs.getCategoryService().getAllNotDeletedCategories();
+
+        for(Category cat : categories){
+            xData.add(cat.getLabel());
+            Double totalSpendings = gs.getSpendingService().getTotalSpendingsByCategoryID(cat.getId());
+            Double budget = cat.getBudget();
+            Double warningTreshold = cat.getWarningThreshold();
+            Double prog = (totalSpendings * 100) / budget;
+            yData.add(Float.parseFloat(Double.toString(prog)));
+        }
+
+    }
+
+    private void addDataToChart(){
+        ArrayList<Entry> yVals1 = new ArrayList<Entry>();
+
+        for (int i = 0; i < yData.size(); i++)
+            yVals1.add(new Entry(yData.get(i), i));
+
+        ArrayList<String> xVals = new ArrayList<String>();
+
+        for (int i = 0; i < xData.size(); i++)
+            xVals.add(xData.get(i));
+
+        // create pie data set
+        PieDataSet dataSet = new PieDataSet(yVals1, "Conso Categ");
+        dataSet.setSliceSpace(3);
+        dataSet.setSelectionShift(5);
+
+        // add many colors
+        ArrayList<Integer> colors = new ArrayList<Integer>();
+
+        for (int c : ColorTemplate.VORDIPLOM_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.JOYFUL_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.COLORFUL_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.LIBERTY_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.PASTEL_COLORS)
+            colors.add(c);
+
+        colors.add(ColorTemplate.getHoloBlue());
+        dataSet.setColors(colors);
+
+        // instantiate pie data object now
+        PieData data = new PieData(xVals, dataSet);
+        data.setValueFormatter(new PercentFormatter());
+        data.setValueTextSize(11f);
+        data.setValueTextColor(Color.GRAY);
+
+        pieChart.setData(data);
+
+        // undo all highlights
+        pieChart.highlightValues(null);
+
+        // update pie chart
+        pieChart.invalidate();
     }
 }
