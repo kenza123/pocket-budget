@@ -87,7 +87,7 @@ public class AddCategory extends AppCompatActivity implements View.OnClickListen
                 finish();
             }
         } else {
-        gs.alerter("Données invalides");
+            gs.alerter("Données invalides");
         }
     }
 
