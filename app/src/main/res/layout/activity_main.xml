@@ -180,4 +180,15 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/chart_layout"
+        android:paddingTop="16dp"
+        android:paddingBottom="6dp"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp">
+
+    </RelativeLayout>
+
 </android.support.v4.widget.DrawerLayout>
