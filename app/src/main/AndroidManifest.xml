@@ -36,8 +36,10 @@
         <activity
             android:name=".activity.AddSpending"
             android:label="@string/newSpending" />
-        <activity android:name=".activity.AddItem"
-            android:label="@string/newItem"/>
+        <activity
+            android:name=".activity.AddItem"
+            android:label="@string/newItem" />
+        <activity android:name=".activity.Welcome"></activity>
     </application>
 
 </manifest>
