@@ -3,11 +3,44 @@
     <color name="colorPrimary">#3AB09E</color>
     <color name="colorPrimaryDark">#00A478</color>
     <color name="colorAccent">#3AB09E</color>
-    <color name="eucalyptus">#44D7A8</color>
-    <color name="spanishCrimson">#E51A4C</color>
-    <color name="darkOrange">#FF8C00</color>
-    <color name="spiroDiscoBall">#0FC0FC</color>
     <color name="fireRed">#D70000</color>
     <color name="princetonOrange">#FF8F00</color>
+
+    <color name="seaGreen">#2E8B57</color>
+    <color name="lightSeaGreen">#20B2AA</color>
+    <color name="ufoGreen">#3CD070</color>
+    <color name="eucalyptus">#44D7A8</color>
+    <color name="findTheCouponGreen">#9ECE08</color>
+
+    <color name="spanishCrimson">#E51A4C</color>
+    <color name="darkPink">#E75480</color>
+    <color name="frenchFuchsia">#FD3F92</color>
+    <color name="ruddy">#FF0028</color>
+    <color name="blush">#DE5D83</color>
+
+    <color name="oceanBoatBlue">#0077BE</color>
+    <color name="dodgerBlue">#1E90FF</color>
+    <color name="cyan">#00B7EB</color>
+    <color name="spiroDiscoBall">#0FC0FC</color>
+    <color name="columbiaBlue">#9BDDFF</color>
+
+    <color name="magentaHaze">#9F4576</color>
+    <color name="pearlyPurple">#B768A2</color>
+    <color name="mulberry">#C54B8C</color>
+    <color name="violetRed">#F75394</color>
+    <color name="brightUbe">#D19FE8</color>
+
+    <color name="deepCarrotOrange">#E9692C</color>
+    <color name="giantsOrange">#FE5A1D</color>
+    <color name="darkOrange">#FF8C00</color>
+    <color name="salmon2">#FA8072</color>
+    <color name="neonCarrot">#FFA343</color>
+
+    <color name="canaryYellow">#FFEF00</color>
+    <color name="amber">#FFBF00</color>
+    <color name="lemon">#FFF700</color>
+    <color name="googleYellow">#EEB211</color>
+
     <color name="defaultTextColor">#919191</color>
+
 </resources>
