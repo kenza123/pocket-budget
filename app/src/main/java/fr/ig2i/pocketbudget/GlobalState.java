@@ -10,6 +10,7 @@ import android.widget.Toast;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 
+import fr.ig2i.pocketbudget.service.BalanceService;
 import fr.ig2i.pocketbudget.service.CategoryService;
 import fr.ig2i.pocketbudget.service.EarningService;
 import fr.ig2i.pocketbudget.service.SpendingService;
@@ -55,4 +56,7 @@ public class GlobalState extends Application{
         return new SpendingService(GlobalState.context);
     }
 
+    public BalanceService getBalanceService() {
+        return new BalanceService(GlobalState.context);
+    }
 }

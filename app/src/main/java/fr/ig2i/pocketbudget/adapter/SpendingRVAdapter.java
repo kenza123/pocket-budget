@@ -34,7 +34,7 @@ public class SpendingRVAdapter extends RecyclerView.Adapter<SpendingRVAdapter.Sp
     public SpendingRVAdapter(GlobalState gs, Category category) {
         this.gs = gs;
         this.category = category;
-        this.spendings = gs.getSpendingService().getSpendingsByCategoryId(category.getId());
+        this.spendings = gs.getSpendingService().getSpendingsOfTheMonthByCategoryId(category.getId());
     }
 
     public class SpendingViewHolder extends RecyclerView.ViewHolder {

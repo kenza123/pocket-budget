@@ -113,6 +113,14 @@ public class Category implements Parcelable{
 
     @Override
     public String toString() {
-        return this.getLabel();
+        return "Category{" +
+                "id=" + id +
+                ", label='" + label + '\'' +
+                ", budget=" + budget +
+                ", warningThreshold=" + warningThreshold +
+                ", createdAt=" + createdAt +
+                ", deletedOn=" + deletedOn +
+                ", depenseProgress=" + depenseProgress +
+                '}';
     }
 }

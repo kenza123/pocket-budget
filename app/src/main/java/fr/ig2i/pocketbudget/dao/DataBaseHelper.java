@@ -15,6 +15,7 @@ public class DataBaseHelper extends SQLiteOpenHelper  {
     public static final String CATEGORIE_TABLE = "categorie";
     public static final String SPENDING_TABLE = "spending";
     public static final String EARNING_TABLE = "earning";
+    public static final String BALANCE_TABLE = "balance";
 
     public static final String ID_COLUMN = "id";
     public static final String LABEL_COLUMN = "label";
@@ -29,9 +30,8 @@ public class DataBaseHelper extends SQLiteOpenHelper  {
     public static final String CREATE_CATEGORIE_TABLE = "CREATE TABLE "
             + CATEGORIE_TABLE + "(" + ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + LABEL_COLUMN + " TEXT, " + CATEGORIE_BUDGET + " DOUBLE, "
-            + CATEGORIE_WARNING_THRESHOLD + " DOUBLE, " + CREATED_AT_COLUMN + " String, "
-            + DELETED_ON_COLUMN + " String )";
-
+            + CATEGORIE_WARNING_THRESHOLD + " DOUBLE, " + CREATED_AT_COLUMN + " DATE, "
+            + DELETED_ON_COLUMN + " DATE )";
 
     public static final String CREATE_SPENDING_TABLE = "CREATE TABLE "
             + SPENDING_TABLE + "(" + ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -44,6 +44,11 @@ public class DataBaseHelper extends SQLiteOpenHelper  {
             + EARNING_TABLE + "(" + ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + LABEL_COLUMN + " TEXT, " + AMOUNT_COLUMN + " DOUBLE, "
             + DATE_COLUMN + " DATE " + ")";
+
+    public static final String CREATE_BALANCE_TABLE = "CREATE TABLE "
+            + BALANCE_TABLE + "(" + ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + AMOUNT_COLUMN + " DOUBLE, " + DATE_COLUMN + " DATE, "
+            + CREATED_AT_COLUMN + " DATETIME ) ";
 
     private static DataBaseHelper instance;
 
@@ -71,6 +76,7 @@ public class DataBaseHelper extends SQLiteOpenHelper  {
         db.execSQL(CREATE_CATEGORIE_TABLE);
         db.execSQL(CREATE_EARNING_TABLE);
         db.execSQL(CREATE_SPENDING_TABLE);
+        db.execSQL(CREATE_BALANCE_TABLE);
     }
 
     @Override
