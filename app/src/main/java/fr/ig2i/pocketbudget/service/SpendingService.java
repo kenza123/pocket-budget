@@ -16,22 +16,15 @@ public class SpendingService {
 
     private static final String TAG = "SpendingService";
     private SpendingDAO spendingDAO;
+    private BalanceService balanceService;
 
     public SpendingService(Context context) {
         spendingDAO = SpendingDAO.getInstance(context);
+        balanceService = new BalanceService(context);
     }
 
-    public List<Spending> getAllSpendings(){
-        List<Spending> spendings = new ArrayList<Spending>();
-        spendings.add(new Spending("Robe Zara",100.00));
-        spendings.add(new Spending("Pantalon Stradivarius",25.00));
-        spendings.add(new Spending("Sac à main Stradivarius",30.00));
-
-        return spendings;
-    }
-
-    public List<Spending> getSpendingsByCategoryId(int id) {
-        List<Spending> spendings = spendingDAO.getSpendingsByCategoryId(id);
+    public List<Spending> getSpendingsOfTheMonthByCategoryId(int id) {
+        List<Spending> spendings = spendingDAO.getSpendingsOfTheMonthByCategoryId(id);
         Log.i(TAG, " Show the spendings");
         for(Spending spending : spendings) {
             Log.i(TAG, spending.toString());
@@ -44,23 +37,28 @@ public class SpendingService {
     }
 
     public Double getTotalSpendingsByCategoryID(int id) {
-        return spendingDAO.getTotalSpendingsByCategoryID(id);
+        return spendingDAO.getTotalSpendingsOfTheMonthByCategoryID(id);
     }
 
     public void addSpending(Spending spending){
         spendingDAO.createSpending(spending);
         Log.i(TAG, "The spending " + spending.toString() + "has been added");
+        balanceService.updateBalance(spending.getDate(), -1 * spending.getAmount());
     }
 
     public void deleteSpending(Spending spending) {
         spendingDAO.deleteSpending(spending);
         Log.i(TAG, "The spending " + spending.toString() + "has been deleted");
+        balanceService.updateBalance(spending.getDate(), spending.getAmount());
     }
 
     public void updateSpending(Spending spending) {
-        if (spendingDAO.getSpendingById(spending.getId()) != null) {
+        Spending oldSpending = spendingDAO.getSpendingById(spending.getId());
+        if (oldSpending != null) {
             spendingDAO.updateSpending(spending);
             Log.i(TAG, "The spending " + spending.toString() + "has been updated");
+            balanceService.updateBalance(spending.getDate(),
+                    oldSpending.getAmount() - spending.getAmount());
         }
     }
 

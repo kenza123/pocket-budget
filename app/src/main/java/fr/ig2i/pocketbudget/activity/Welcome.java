@@ -9,8 +9,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 import fr.ig2i.pocketbudget.GlobalState;
 import fr.ig2i.pocketbudget.R;
+import fr.ig2i.pocketbudget.model.Balance;
 
 
 public class Welcome extends AppCompatActivity implements View.OnClickListener {
@@ -22,6 +26,7 @@ public class Welcome extends AppCompatActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+        gs = (GlobalState) getApplication();
 
         edtBalance = (EditText) findViewById(R.id.balance_editText);
         btnCreate = (Button) findViewById(R.id.create_button);
@@ -42,6 +47,13 @@ public class Welcome extends AppCompatActivity implements View.OnClickListener {
     public void onClick(View v) {
         if (valideFields()) {
             //Insérer les informations dans la table solde
+            Date date = new Date();
+            Balance balance = new Balance();
+            balance.setAmount(Double.parseDouble(edtBalance.getText().toString()));
+            balance.setDate(date);
+            balance.setCreatedAt(new Timestamp(date.getTime()));
+            gs.getBalanceService().createBalance(balance);
+
             Intent versMainActivity = new Intent(this,MainActivity.class);
             versMainActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(versMainActivity);

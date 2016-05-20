@@ -64,6 +64,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         addButton = (ImageView) findViewById(R.id.add_button);
         addButton.setOnClickListener(this);
 
+        TextView balanceAmount =  (TextView) findViewById(R.id.balance_amount);
+        balanceAmount.setText(Double.toString(gs.getBalanceService().getBalanceAmount()) + "€");
+
         TextView earningAmount =  (TextView) findViewById(R.id.earning_amount);
         earningAmount.setText(Double.toString(gs.getEarningService().countSumEarningsOfTheMonth()) + "€");
 
@@ -72,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         TextView spendingAmout = (TextView) findViewById(R.id.spending_amount);
         spendingAmout.setText(Double.toString(gs.getSpendingService().countTotalSpendingsOfTheMonth()) + "€");
+
     }
 
     @Override
@@ -96,6 +100,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onRestart() {
         super.onRestart();
+        TextView balanceAmount =  (TextView) findViewById(R.id.balance_amount);
+        balanceAmount.setText(Double.toString(gs.getBalanceService().getBalanceAmount()) + "€");
+
         TextView earningAmount =  (TextView) findViewById(R.id.earning_amount);
         earningAmount.setText(Double.toString(gs.getEarningService().countSumEarningsOfTheMonth()) + "€");
 

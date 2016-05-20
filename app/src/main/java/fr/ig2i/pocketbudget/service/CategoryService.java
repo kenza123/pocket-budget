@@ -8,6 +8,7 @@ import java.util.List;
 
 import fr.ig2i.pocketbudget.dao.CategoryDAO;
 import fr.ig2i.pocketbudget.model.Category;
+import fr.ig2i.pocketbudget.model.Spending;
 
 /**
  * Created by ghitakhamaily on 09/04/16.
@@ -16,9 +17,11 @@ public class CategoryService {
 
     private static final String TAG = "CategoryService";
     private CategoryDAO categoryDAO;
+    private SpendingService spendingService;
 
     public CategoryService(Context context) {
         categoryDAO = CategoryDAO.getInstance(context);
+        spendingService = new SpendingService(context);
     }
 
     public List<Category> getAllNotDeletedCategories(){
@@ -56,8 +59,11 @@ public class CategoryService {
         }
     }
     public void deleteCategory(Category category){
-
         categoryDAO.markAsDeletedCategory(category);
+        List<Spending> spendings = spendingService.getSpendingsOfTheMonthByCategoryId(category.getId());
+        for(Spending spending : spendings) {
+            spendingService.deleteSpending(spending);
+        }
         Log.i(TAG, "The category " + category.toString() + "has been deleted");
         //update the balance: reduce the spendings of this category
     }

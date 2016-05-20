@@ -15,9 +15,11 @@ public class EarningService {
 
     private static final String TAG = "EarningService";
     private EarningDAO earningDAO;
+    private BalanceService balanceService;
 
     public EarningService(Context context) {
         earningDAO = EarningDAO.getInstance(context);
+        balanceService = new BalanceService(context);
     }
 
     public List<Earning> getAllEarningsOfTheMonth(){
@@ -37,21 +39,23 @@ public class EarningService {
     public void addEarning(Earning earning){
         earningDAO.createEarning(earning);
         Log.i(TAG, "The earning " + earning.toString() + "has been added");
-        //modify the balance file
+        balanceService.updateBalance(earning.getDate(), earning.getAmount());
     }
 
     public void updateEarning(Earning earning){
-        if (earningDAO.getEarningById(earning.getId()) != null) {
+        Earning oldEarning = earningDAO.getEarningById(earning.getId());
+        if (oldEarning != null) {
             earningDAO.updateEarning(earning);
             Log.i(TAG, "The earning " + earning.toString() + "has been updated");
-            //modify the balance file
+            balanceService.updateBalance(earning.getDate(),
+                    earning.getAmount() - oldEarning.getAmount());
         }
     }
 
     public void deleteEarning(Earning earning){
         earningDAO.deleteEarning(earning);
         Log.i(TAG, "The earning " + earning.toString() + "has been deleted");
-        //modify the  balance file
+        balanceService.updateBalance(earning.getDate(), -1 * earning.getAmount());
     }
 
     public String[] getAllLabels() {

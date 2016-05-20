@@ -86,12 +86,16 @@ public class SpendingDAO extends DataBaseDAO {
         return spending;
     }
 
-    public List<Spending> getSpendingsByCategoryId(int id) {
+    public List<Spending> getSpendingsOfTheMonthByCategoryId(int id) {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.DAY_OF_MONTH, 1);
+
         List<Spending> spendings = new ArrayList<Spending>();
         String query = "select " +  allColumns + " from " + DataBaseHelper.SPENDING_TABLE + " spend, " +
                 DataBaseHelper.CATEGORIE_TABLE + " categ where spend." + DataBaseHelper.SPENDING_CATEGORIE_ID +
                 " = categ." + DataBaseHelper.ID_COLUMN + " and spend." + DataBaseHelper.SPENDING_CATEGORIE_ID +
-                " = " + id + " ORDER BY date(spend." + DataBaseHelper.DATE_COLUMN + ")";
+                " = " + id + " AND spend." + DataBaseHelper.DATE_COLUMN + " >= '" + formatter.format(c.getTime()) +
+                "' ORDER BY date(spend." + DataBaseHelper.DATE_COLUMN + ")";
 
         Cursor cursor = database.rawQuery(query, null);
 
@@ -120,7 +124,7 @@ public class SpendingDAO extends DataBaseDAO {
         return cursor.getDouble(0);
     }
 
-    public Double getTotalSpendingsByCategoryID(int idCategory) {
+    public Double getTotalSpendingsOfTheMonthByCategoryID(int idCategory) {
         Calendar c = Calendar.getInstance();
         c.set(Calendar.DAY_OF_MONTH, 1);
 
