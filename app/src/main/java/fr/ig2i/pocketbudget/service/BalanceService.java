@@ -38,6 +38,9 @@ public class BalanceService {
     }
 
     public double getBalanceAmount(){
-        return balanceDAO.getLastBalance().getAmount();
+        if(balanceDAO.getLastBalance() != null) {
+            return balanceDAO.getLastBalance().getAmount();
+        }
+        return 0;
     }
 }

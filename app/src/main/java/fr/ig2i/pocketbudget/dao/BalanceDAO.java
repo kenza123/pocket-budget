@@ -67,11 +67,11 @@ public class BalanceDAO extends DataBaseDAO {
     public Balance getLastBalance() {
         Cursor cursor = database.rawQuery("select * from " + DataBaseHelper.BALANCE_TABLE +
                 " ORDER BY " + DataBaseHelper.CREATED_AT_COLUMN + " DESC LIMIT 1", null);
-
-        if (cursor != null ) {
+        Balance balance = null;
+        if (cursor != null && cursor.getCount()>0) {
             cursor.moveToFirst();
+            balance = cursorToBalance(cursor);
         }
-        Balance balance = cursorToBalance(cursor);
         cursor.close();
         return balance;
     }

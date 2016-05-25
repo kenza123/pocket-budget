@@ -21,13 +21,23 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.BubbleChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.BubbleData;
+import com.github.mikephil.charting.data.BubbleDataSet;
+import com.github.mikephil.charting.data.BubbleEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
@@ -51,6 +61,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RelativeLayout earning;
     private ImageView addButton;
     private PieChart pieChart;
+    private BubbleChart bubbleChart;
+    private BarChart barChart;
     private RelativeLayout chartLayout;
     private Boolean availableData;
     private GlobalState gs;
@@ -63,17 +75,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         gs = (GlobalState) getApplication();
-        availableData = initiateChartData();
 
-        mDrawerList = (ListView) findViewById(R.id.navList);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mActivityTitle = getTitle().toString();
-
-        addDrawerItems();
-        setupDrawer();
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
 
         spending = (RelativeLayout) findViewById(R.id.spending);
         spending.setOnClickListener(this);
@@ -82,58 +85,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         addButton = (ImageView) findViewById(R.id.add_button);
         addButton.setOnClickListener(this);
 
-        chartLayout = (RelativeLayout) findViewById(R.id.chart_layout);
         pieChart = (PieChart) findViewById(R.id.pie_chart);
-        //pieChart = new PieChart(this);
+        barChart = (BarChart) findViewById(R.id.bar_chart);
 
+        setUpPieChart();
+        //setUpBubbleChart();
+        setUpBarChart();
 
-
-        // add pie chart to main layout
-        //chartLayout.addView(pieChart);
-
-        // configure pie chart
-        pieChart.setUsePercentValues(true);
-        pieChart.setDescription("");
-        //pieChart.setMinimumWidth(chartLayout.getWidth());
-
-        // enable hole and configure
-        pieChart.setDrawHoleEnabled(true);
-        pieChart.setHoleColor(0);
-        pieChart.setHoleRadius(20);
-        pieChart.setTransparentCircleRadius(25);
-
-        // enable rotation of the chart by touch
-        pieChart.setRotationAngle(0);
-        pieChart.setRotationEnabled(true);
-
-        // set a chart value selected listener
-        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-
-            @Override
-            public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
-                // display msg when value selected
-                if (e == null)
-                    return;
-
-                //gs.alerter(xData[e.getXIndex()] + " = " + e.getVal() + "%");
-            }
-
-            @Override
-            public void onNothingSelected() {
-
-            }
-        });
-
-        // add data
-        if (availableData) {
-            addDataToChart();
-        }
-
-        // customize legends
-        Legend l = pieChart.getLegend();
-        l.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
-        l.setXEntrySpace(7);
-        l.setYEntrySpace(5);
 
         TextView balanceAmount =  (TextView) findViewById(R.id.balance_amount);
         balanceAmount.setText(Double.toString(gs.getBalanceService().getBalanceAmount()) + "€");
@@ -175,6 +133,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (availableData) {
             addDataToChart();
         }
+        //setUpBubbleChart();
+        setUpBarChart();
 
         TextView balanceAmount =  (TextView) findViewById(R.id.balance_amount);
         balanceAmount.setText(Double.toString(gs.getBalanceService().getBalanceAmount()) + "€");
@@ -207,76 +167,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void addDrawerItems() {
-        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listArray);
-        mDrawerList.setAdapter(mAdapter);
-
-        mDrawerList.setOnItemClickListener(new ListView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // display view for selected nav drawer item
-                //displayView(position);
-                String item = listArray[position];
-                if (item != getTitle().toString()) {
-                    switch (item) {//"Dashboard", "Dépenses", "Revenus", "Rapport", "Paramètres"
-                        case "Dashboard":
-                            Intent versDashboard = new Intent(getApplicationContext(), MainActivity.class);
-                            startActivity(versDashboard);
-                            break;
-                        case "Dépenses":
-                            Intent versCatSpendings = new Intent(getApplicationContext(), CategorySpendings.class);
-                            startActivity(versCatSpendings);
-                            break;
-                        case "Revenus":
-                            Intent versEarnings = new Intent(getApplicationContext(), Earnings.class);
-                            startActivity(versEarnings);
-                            break;
-                        case "Rapport":
-                            break;
-                        case "Paramètres":
-                            break;
-                    }
-                }
-
-            }
-        });
-    }
-
-    private void setupDrawer() {
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
-
-            /** Called when a drawer has settled in a completely open state. */
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                getSupportActionBar().setTitle("Navigation");
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-
-            /** Called when a drawer has settled in a completely closed state. */
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                getSupportActionBar().setTitle(mActivityTitle);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-        };
-
-        mDrawerToggle.setDrawerIndicatorEnabled(true);
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -287,11 +177,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
-        // Activate the navigation drawer toggle
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -309,15 +194,128 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if (categories.size() > 0) {
             for(Category cat : categories){
-                xData.add(cat.getLabel());
                 Double categorySpendings = gs.getSpendingService().getTotalSpendingsByCategoryID(cat.getId());
-                Double prog = (categorySpendings * 100) / totalSpendings;
-                yData.add(Float.parseFloat(Double.toString(prog)));
+                if(categorySpendings > 0) {
+                    Double prog = (categorySpendings * 100) / totalSpendings;
+                    yData.add(Float.parseFloat(Double.toString(prog)));
+                    xData.add(cat.getLabel());
+                }
             }
             return true;
         } else {
             return false;
         }
+
+    }
+
+    private void setUpPieChart(){
+        availableData = initiateChartData();
+        // configure pie chart
+        pieChart.setUsePercentValues(true);
+        pieChart.setDescription("");
+
+        // enable hole and configure
+        pieChart.setDrawHoleEnabled(true);
+        pieChart.setHoleColor(0);
+        pieChart.setHoleRadius(20);
+        pieChart.setTransparentCircleRadius(25);
+
+        // enable rotation of the chart by touch
+        pieChart.setRotationAngle(0);
+        pieChart.setRotationEnabled(true);
+
+        // set a chart value selected listener
+        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+
+            @Override
+            public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
+                // display msg when value selected
+                if (e == null)
+                    return;
+
+                //gs.alerter(xData[e.getXIndex()] + " = " + e.getVal() + "%");
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
+
+        // add data
+        if (availableData) {
+            addDataToChart();
+        }
+
+        // customize legends
+        Legend l = pieChart.getLegend();
+        l.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
+        l.setXEntrySpace(7);
+        l.setYEntrySpace(5);
+    }
+
+    /*private void setUpBubbleChart(){
+        //ArrayList<BubbleDataSet> dataSets = null;
+        ArrayList<BubbleEntry> entries1 = new ArrayList<>();
+        ArrayList<BubbleEntry> entries2 = new ArrayList<>();
+        ArrayList<String> labels = new ArrayList<String>();
+        List<Category> categories = gs.getCategoryService().getTwoMonthsCategories();
+
+        for(int i = 0; i < categories.size(); i++){
+            float v1, v2;
+            v1 = Float.parseFloat(Double.toString(gs.getSpendingService().getTotalSpendingsByCategoryID(categories.get(i).getId())));
+            v2 = Float.parseFloat(Double.toString(gs.getSpendingService().getTotalSpendingsOfPreviousMonthByCategoryID(categories.get(i).getId())));
+
+            entries1.add(new BubbleEntry(i+1, v1, 5f));
+            entries2.add(new BubbleEntry(i+1, v2, 5f));
+
+            labels.add(categories.get(i).getLabel());
+        }
+
+        BubbleDataSet dataset1 = new BubbleDataSet(entries1, "# of Calls");
+        dataset1.setColor(gs.getNiceTemplate()[1]);
+        BubbleDataSet dataset2 = new BubbleDataSet(entries2, "# of Calls");
+        dataset2.setColor(gs.getNiceTemplate()[0]);
+        //dataSets = new ArrayList<>();
+        ArrayList<IBubbleDataSet> dataSets = new ArrayList<IBubbleDataSet>();
+        dataSets.add(dataset1);
+        dataSets.add(dataset2);
+        BubbleData data = new BubbleData(labels, dataSets);
+        bubbleChart.setData(data); // set the data and list of labels into chart
+    }*/
+
+    public void setUpBarChart(){
+        //ArrayList<BarDataSet> dataSets = null;
+        ArrayList<BarEntry> valueSet1 = new ArrayList<>();
+        ArrayList<BarEntry> valueSet2 = new ArrayList<>();
+        ArrayList<String> xAxis = new ArrayList<>();
+        List<Category> categories = gs.getCategoryService().getTwoMonthsCategories();
+        BarEntry be1;
+        BarEntry be2;
+
+        for(int i = 0; i < categories.size(); i++){
+            be1 = new BarEntry(Float.parseFloat(Double.toString(gs.getSpendingService().getTotalSpendingsOfPreviousMonthByCategoryID(categories.get(i).getId()))), i);
+            valueSet1.add(be1);
+            be2 = new BarEntry(Float.parseFloat(Double.toString(gs.getSpendingService().getTotalSpendingsByCategoryID(categories.get(i).getId()))), i);
+            valueSet2.add(be2);
+
+            xAxis.add(categories.get(i).getLabel());
+        }
+
+        BarDataSet barDataSet1 = new BarDataSet(valueSet1, "Mois dernier");
+        barDataSet1.setColor(gs.getNiceTemplate()[1]);
+        BarDataSet barDataSet2 = new BarDataSet(valueSet2, "Ce mois");
+        barDataSet2.setColor(gs.getNiceTemplate()[0]);
+
+        ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+        dataSets.add(barDataSet1);
+        dataSets.add(barDataSet2);
+
+        BarData data = new BarData(xAxis, dataSets);
+        barChart.setData(data);
+        barChart.setDescription("My Chart");
+        barChart.animateXY(2000, 2000);
+        barChart.invalidate();
 
     }
 

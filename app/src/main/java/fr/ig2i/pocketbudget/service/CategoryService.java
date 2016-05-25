@@ -43,6 +43,15 @@ public class CategoryService {
         return categories;
     }
 
+    public List<Category> getTwoMonthsCategories(){
+        List<Category> categories = categoryDAO.getTwoMonthsCategories();
+        Log.i(TAG, " Show the categories");
+        for(Category category : categories) {
+            Log.i(TAG, category.toString());
+        }
+        return categories;
+    }
+
     public double countTheTotalBudget(){
         return categoryDAO.countTheTotalBudget();
     }

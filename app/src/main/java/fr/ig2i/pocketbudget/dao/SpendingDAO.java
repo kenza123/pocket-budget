@@ -137,6 +137,35 @@ public class SpendingDAO extends DataBaseDAO {
         if (cursor != null ) {
             cursor.moveToFirst();
         }
+
+        Log.i(TAG, "This month spending = " + Float.parseFloat(Double.toString(cursor.getDouble(0))));
+
+
+        return cursor.getDouble(0);
+    }
+
+    public Double getTotalSpendingsOfPreviousMonthByCategoryID(int idCategory) {
+        Calendar c1 = Calendar.getInstance();
+        Calendar c2 = Calendar.getInstance();
+        c1.set(Calendar.DAY_OF_MONTH, 1);
+        c1.add(Calendar.MONTH, -1);
+        c2.set(Calendar.DAY_OF_MONTH, 1);
+
+        Log.i(TAG, "previous month = " + c2.getTime());
+
+        Cursor cursor = database.rawQuery("select sum(" + DataBaseHelper.AMOUNT_COLUMN +
+                        ") FROM " + DataBaseHelper.SPENDING_TABLE +
+                        " WHERE " + DataBaseHelper.SPENDING_CATEGORIE_ID + " = " + idCategory +
+                        " AND " + DataBaseHelper.DATE_COLUMN + " >= '" + formatter.format(c1.getTime()) +
+                        "' AND " + DataBaseHelper.DATE_COLUMN + " < '" + formatter.format(c2.getTime()) +"'",
+                null);
+
+        if (cursor != null ) {
+            cursor.moveToFirst();
+        }
+
+        Log.i(TAG, "Previous month spending = " + Float.parseFloat(Double.toString(cursor.getDouble(0))));
+
         return cursor.getDouble(0);
     }
 
