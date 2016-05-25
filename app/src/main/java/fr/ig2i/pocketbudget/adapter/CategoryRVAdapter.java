@@ -125,7 +125,7 @@ public class CategoryRVAdapter extends RecyclerView.Adapter<CategoryRVAdapter.Ca
         holder.spentMoney.setText("-" + String.valueOf(totalSpendings) + "€");
 
         if(totalSpendings > budget){
-            Log.i(TAG, "totalSpendings > budget");
+            Log.i(TAG, "totalSpendings >= budget");
             holder.cProgress.setProgress(100);
             holder.progressText.setText("+100%");
             holder.progressText.setTextColor(Color.parseColor("#D70000"));

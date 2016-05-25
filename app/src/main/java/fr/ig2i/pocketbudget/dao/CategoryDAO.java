@@ -64,6 +64,22 @@ public class CategoryDAO extends DataBaseDAO {
         return categories;
     }
 
+    public List<Category> getTwoMonthsCategories() {
+        List<Category> categories = new ArrayList<Category>();
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.DAY_OF_MONTH, 1);
+
+        Cursor cursor = database.rawQuery("select * from " + DataBaseHelper.CATEGORIE_TABLE +
+                " where " + DataBaseHelper.DELETED_ON_COLUMN + " is null OR " +
+                DataBaseHelper.DELETED_ON_COLUMN + " >= '" + formatter.format(c.getTime()) + "'", null);
+
+        while (cursor.moveToNext()) {
+            categories.add(cursorToCategory(cursor));
+        }
+        cursor.close();
+        return categories;
+    }
+
     public long createCategory(Category category) {
         ContentValues values = new ContentValues();
         values.put(DataBaseHelper.LABEL_COLUMN, category.getLabel());

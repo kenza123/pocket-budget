@@ -5,9 +5,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import fr.ig2i.pocketbudget.model.Balance;
@@ -61,17 +63,43 @@ public class BalanceDAO extends DataBaseDAO {
 
     public int deleteBalance(Balance balance) {
         return database.delete(DataBaseHelper.BALANCE_TABLE,
-                WHERE_ID_EQUALS, new String[] { balance.getId() + "" });
+                WHERE_ID_EQUALS, new String[]{balance.getId() + ""});
     }
 
     public Balance getLastBalance() {
         Cursor cursor = database.rawQuery("select * from " + DataBaseHelper.BALANCE_TABLE +
                 " ORDER BY " + DataBaseHelper.CREATED_AT_COLUMN + " DESC LIMIT 1", null);
-
-        if (cursor != null ) {
+        Balance balance = null;
+        if (cursor != null && cursor.getCount()>0) {
             cursor.moveToFirst();
+            balance = cursorToBalance(cursor);
         }
-        Balance balance = cursorToBalance(cursor);
+        cursor.close();
+        return balance;
+    }
+
+    public Balance getFirstBalance() {
+        Cursor cursor = database.rawQuery("select * from " + DataBaseHelper.BALANCE_TABLE +
+                " ORDER BY " + DataBaseHelper.CREATED_AT_COLUMN + " ASC LIMIT 1", null);
+        Balance balance = null;
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            balance = cursorToBalance(cursor);
+        }
+        cursor.close();
+        return balance;
+    }
+
+    public Balance getBalanceBeforDate(Date date) {
+        Cursor cursor = database.rawQuery("select * from " + DataBaseHelper.BALANCE_TABLE +
+                " WHERE " + DataBaseHelper.DATE_COLUMN + " <= '" + formatter.format(date) +
+                "' ORDER BY " + DataBaseHelper.DATE_COLUMN + " DESC LIMIT 1", null);
+
+        Balance balance = null;
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            balance = cursorToBalance(cursor);
+        }
         cursor.close();
         return balance;
     }
@@ -95,7 +123,8 @@ public class BalanceDAO extends DataBaseDAO {
             balance.setId(cursor.getInt(0));
             balance.setAmount(cursor.getDouble(1));
             balance.setDate(formatter.parse(cursor.getString(2)));
-            balance.setDate(dateTimeFormatter.parse(cursor.getString(3)));
+            Date date = dateTimeFormatter.parse(cursor.getString(3));
+            balance.setCreatedAt(new Timestamp(date.getTime()));
         } catch (ParseException e) {
             Log.e(TAG, "error while parsing the date");
             e.printStackTrace();
