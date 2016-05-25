@@ -51,19 +51,11 @@ import fr.ig2i.pocketbudget.R;
 import fr.ig2i.pocketbudget.model.Category;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private ListView mDrawerList;
-    private DrawerLayout mDrawerLayout;
-    private ArrayAdapter<String> mAdapter;
-    private ActionBarDrawerToggle mDrawerToggle;
-    private String mActivityTitle;
-    private String[] listArray = {"Dashboard", "Dépenses", "Revenus", "Rapport", "Paramètres"};
     private RelativeLayout spending;
     private RelativeLayout earning;
     private ImageView addButton;
     private PieChart pieChart;
-    private BubbleChart bubbleChart;
     private BarChart barChart;
-    private RelativeLayout chartLayout;
     private Boolean availableData;
     private GlobalState gs;
     private String TAG;
@@ -76,8 +68,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         gs = (GlobalState) getApplication();
 
-        mActivityTitle = getTitle().toString();
-
         spending = (RelativeLayout) findViewById(R.id.spending);
         spending.setOnClickListener(this);
         earning = (RelativeLayout) findViewById(R.id.earning);
@@ -89,7 +79,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         barChart = (BarChart) findViewById(R.id.bar_chart);
 
         setUpPieChart();
-        //setUpBubbleChart();
         setUpBarChart();
 
 
@@ -133,7 +122,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (availableData) {
             addDataToChart();
         }
-        //setUpBubbleChart();
         setUpBarChart();
 
         TextView balanceAmount =  (TextView) findViewById(R.id.balance_amount);
@@ -191,20 +179,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Double totalSpendings = gs.getSpendingService().countTotalSpendingsOfTheMonth();
         xData.clear();
         yData.clear();
+        boolean flag = false;
 
         if (categories.size() > 0) {
             for(Category cat : categories){
                 Double categorySpendings = gs.getSpendingService().getTotalSpendingsByCategoryID(cat.getId());
                 if(categorySpendings > 0) {
+                    flag = true;
                     Double prog = (categorySpendings * 100) / totalSpendings;
                     yData.add(Float.parseFloat(Double.toString(prog)));
                     xData.add(cat.getLabel());
                 }
             }
-            return true;
-        } else {
-            return false;
         }
+        return flag;
 
     }
 
@@ -254,38 +242,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         l.setYEntrySpace(5);
     }
 
-    /*private void setUpBubbleChart(){
-        //ArrayList<BubbleDataSet> dataSets = null;
-        ArrayList<BubbleEntry> entries1 = new ArrayList<>();
-        ArrayList<BubbleEntry> entries2 = new ArrayList<>();
-        ArrayList<String> labels = new ArrayList<String>();
-        List<Category> categories = gs.getCategoryService().getTwoMonthsCategories();
-
-        for(int i = 0; i < categories.size(); i++){
-            float v1, v2;
-            v1 = Float.parseFloat(Double.toString(gs.getSpendingService().getTotalSpendingsByCategoryID(categories.get(i).getId())));
-            v2 = Float.parseFloat(Double.toString(gs.getSpendingService().getTotalSpendingsOfPreviousMonthByCategoryID(categories.get(i).getId())));
-
-            entries1.add(new BubbleEntry(i+1, v1, 5f));
-            entries2.add(new BubbleEntry(i+1, v2, 5f));
-
-            labels.add(categories.get(i).getLabel());
-        }
-
-        BubbleDataSet dataset1 = new BubbleDataSet(entries1, "# of Calls");
-        dataset1.setColor(gs.getNiceTemplate()[1]);
-        BubbleDataSet dataset2 = new BubbleDataSet(entries2, "# of Calls");
-        dataset2.setColor(gs.getNiceTemplate()[0]);
-        //dataSets = new ArrayList<>();
-        ArrayList<IBubbleDataSet> dataSets = new ArrayList<IBubbleDataSet>();
-        dataSets.add(dataset1);
-        dataSets.add(dataset2);
-        BubbleData data = new BubbleData(labels, dataSets);
-        bubbleChart.setData(data); // set the data and list of labels into chart
-    }*/
-
     public void setUpBarChart(){
-        //ArrayList<BarDataSet> dataSets = null;
         ArrayList<BarEntry> valueSet1 = new ArrayList<>();
         ArrayList<BarEntry> valueSet2 = new ArrayList<>();
         ArrayList<String> xAxis = new ArrayList<>();
@@ -293,29 +250,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         BarEntry be1;
         BarEntry be2;
 
-        for(int i = 0; i < categories.size(); i++){
-            be1 = new BarEntry(Float.parseFloat(Double.toString(gs.getSpendingService().getTotalSpendingsOfPreviousMonthByCategoryID(categories.get(i).getId()))), i);
-            valueSet1.add(be1);
-            be2 = new BarEntry(Float.parseFloat(Double.toString(gs.getSpendingService().getTotalSpendingsByCategoryID(categories.get(i).getId()))), i);
-            valueSet2.add(be2);
+        if (categories.size() > 0) {
+            for(int i = 0; i < categories.size(); i++){
+                be1 = new BarEntry(Float.parseFloat(Double.toString(gs.getSpendingService().getTotalSpendingsOfPreviousMonthByCategoryID(categories.get(i).getId()))), i);
+                valueSet1.add(be1);
+                be2 = new BarEntry(Float.parseFloat(Double.toString(gs.getSpendingService().getTotalSpendingsByCategoryID(categories.get(i).getId()))), i);
+                valueSet2.add(be2);
 
-            xAxis.add(categories.get(i).getLabel());
+                xAxis.add(categories.get(i).getLabel());
+            }
+
+            BarDataSet barDataSet1 = new BarDataSet(valueSet1, "Mois dernier");
+            barDataSet1.setColor(gs.getNiceTemplate()[1]);
+            BarDataSet barDataSet2 = new BarDataSet(valueSet2, "Ce mois");
+            barDataSet2.setColor(gs.getNiceTemplate()[0]);
+
+            ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+            dataSets.add(barDataSet1);
+            dataSets.add(barDataSet2);
+
+            BarData data = new BarData(xAxis, dataSets);
+            barChart.setData(data);
+            barChart.setDescription("My Chart");
+            barChart.animateXY(2000, 2000);
+            barChart.invalidate();
         }
-
-        BarDataSet barDataSet1 = new BarDataSet(valueSet1, "Mois dernier");
-        barDataSet1.setColor(gs.getNiceTemplate()[1]);
-        BarDataSet barDataSet2 = new BarDataSet(valueSet2, "Ce mois");
-        barDataSet2.setColor(gs.getNiceTemplate()[0]);
-
-        ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
-        dataSets.add(barDataSet1);
-        dataSets.add(barDataSet2);
-
-        BarData data = new BarData(xAxis, dataSets);
-        barChart.setData(data);
-        barChart.setDescription("My Chart");
-        barChart.animateXY(2000, 2000);
-        barChart.invalidate();
 
     }
 
