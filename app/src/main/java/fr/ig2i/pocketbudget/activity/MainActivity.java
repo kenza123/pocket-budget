@@ -22,12 +22,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.formatter.PercentFormatter;
@@ -38,8 +41,12 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import fr.ig2i.pocketbudget.GlobalState;
 import fr.ig2i.pocketbudget.R;
@@ -51,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView addButton;
     private PieChart pieChart;
     private BarChart barChart;
+    private LineChart lineChart;
     private Boolean availableData;
     private GlobalState gs;
     private String TAG;
@@ -73,9 +81,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         pieChart = (PieChart) findViewById(R.id.pie_chart);
         barChart = (BarChart) findViewById(R.id.bar_chart);
+        lineChart = (LineChart) findViewById(R.id.line_chart);
 
         setUpPieChart();
         setUpBarChart();
+        setUpLineChart();
 
 
         TextView balanceAmount =  (TextView) findViewById(R.id.balance_amount);
@@ -124,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             addDataToChart();
         }
         setUpBarChart();
+        setUpLineChart();
 
         TextView balanceAmount =  (TextView) findViewById(R.id.balance_amount);
         balanceAmount.setText(Double.toString(gs.getBalanceService().getBalanceAmount()) + "€");
@@ -272,6 +283,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             barChart.invalidate();
         }
 
+    }
+
+    public void setUpLineChart(){
+        Map<String, Float> data = gs.getBalanceService().balanceChart();
+        if (data != null){
+            ArrayList<Entry> entries = new ArrayList<>();
+            ArrayList<String> labels = new ArrayList<>();
+
+            ArrayList<String> keys = new ArrayList<>(data.keySet());
+            for(int i=keys.size()-1; i>=0;i--){
+                Float value = data.get(keys.get(i));
+                int j = keys.size()-1-i;
+                labels.add(keys.get(i));
+                entries.add(new Entry(value, j));
+                Log.i(TAG, "result " + j + keys.get(i) + value);
+            }
+
+            LineDataSet dataset = new LineDataSet(entries, "Solde");
+            LineData dataChart = new LineData(labels, dataset);
+
+            lineChart.setData(dataChart);
+        }
     }
 
     private void addDataToChart(){
