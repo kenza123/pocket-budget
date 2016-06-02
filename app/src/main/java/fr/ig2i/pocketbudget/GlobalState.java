@@ -107,6 +107,7 @@ public class GlobalState extends Application{
     public BalanceService getBalanceService() {
         return new BalanceService(GlobalState.context);
     }
+
     public SharedPreferences getPrefs() {
         return prefs;
     }

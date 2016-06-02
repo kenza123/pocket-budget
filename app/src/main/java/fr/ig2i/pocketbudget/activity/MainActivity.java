@@ -208,6 +208,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // configure pie chart
         pieChart.setUsePercentValues(true);
         pieChart.setDescription("");
+        pieChart.setNoDataText("Pas de données disponibles");
 
         // enable hole and configure
         pieChart.setDrawHoleEnabled(true);
@@ -257,6 +258,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         BarEntry be1;
         BarEntry be2;
 
+        barChart.setNoDataText("Pas de données disponibles");
+
         if (categories.size() > 0) {
             for(int i = 0; i < categories.size(); i++){
                 be1 = new BarEntry(Float.parseFloat(Double.toString(gs.getSpendingService().getTotalSpendingsOfPreviousMonthByCategoryID(categories.get(i).getId()))), i);
@@ -304,6 +307,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             LineData dataChart = new LineData(labels, dataset);
 
             lineChart.setData(dataChart);
+            lineChart.setNoDataText("Pas de données disponibles");
         }
     }
 
